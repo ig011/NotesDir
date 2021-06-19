@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'django_filters',
     'corsheaders',
     'users',
+    'todos',
 ]
 
 MIDDLEWARE = [
@@ -123,7 +124,7 @@ AUTH_USER_MODEL = 'users.ExtendUser'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 GRAPHENE = {
-    'SCHEMA': 'users.schema.schema',
+    'SCHEMA': 'backend.graphql.schema.schema',
     'MIDDLEWARE': [
         'graphql_jwt.middleware.JSONWebTokenMiddleware',
     ],
