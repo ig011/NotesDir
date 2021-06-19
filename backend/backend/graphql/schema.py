@@ -23,24 +23,24 @@ class TodoMutation(graphene.Mutation):
         title = graphene.String(required=True)
         description = graphene.String(required=True)
         thumbnail = graphene.String()
-        background_color = graphene.String(default="white")
-        start_date = graphene.DateTime(default=datetime.now())
+        background_color = graphene.String()
+        start_date = graphene.DateTime()
         end_date = graphene.DateTime(required=True)
 
-    create_todo = graphene.Field(TodoType)
+    todo = graphene.Field(TodoType)
+    todo_created = graphene.Boolean()
 
     @classmethod
-    def mutate(cls, root, info, user_id, title, description, 
-    thumbnail, background_color, start_date, end_date):
+    def mutate(cls, root, info, user_id, title, description, thumbnail, background_color, start_date, end_date):
         user = ExtendUser.objects.filter(id=user_id).first()
         if user:
-            todo = Todo(user_id=user_id, title=title, description=description,
-            thumbnail=thumbnail, background_color=background_color,
-            start_date=start_date, end_date=end_date)
+            todo_created = True
+            todo = Todo(user_id=user_id, title=title, description=description, thumbnail=thumbnail, background_color=background_color, start_date=start_date, end_date=end_date)
             todo.save()
-            return TodoMutation(create_todo=todo)
+            return TodoMutation(todo_created=todo_created, todo=todo)
         else:
-            return
+            todo_created = False
+            return TodoMutation(todo_created=todo_created)
 
 class TodoQuery(graphene.ObjectType):
     all_todos = graphene.List(TodoType, user_id=graphene.ID(), order=graphene.String())
@@ -51,8 +51,7 @@ class TodoQuery(graphene.ObjectType):
 class Query(UserQuery, MeQuery, TodoQuery, graphene.ObjectType):
     pass
 
-class Mutation(AuthMutation, TodoMutation, graphene.ObjectType):
-    pass
-
+class Mutation(AuthMutation, graphene.ObjectType):
+    add_todo = TodoMutation.Field() 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
