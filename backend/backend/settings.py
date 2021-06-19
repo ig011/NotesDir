@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
     'graphql_auth',
     'django_filters',
+    'corsheaders',
     'users',
 ]
 
@@ -41,7 +42,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
+
+CORS_ORIGIN_WHITELIST = (
+'http://127.0.0.1:3000',
+)
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -132,7 +138,8 @@ AUTHENTICATION_BACKENDS = [
 GRAPHQL_JWT = {
     "JWT_ALLOW_ANY_CLASSES": [
         "graphql_auth.mutations.Register",
-        'graphql_auth.mutations.VerifyAccount'
+        'graphql_auth.mutations.VerifyAccount',
+        'graphql_auth.mutations.ObtainJSONWebToken',
     ],
     "JWT_VERIFY_EXPIRATION": True,
     "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
