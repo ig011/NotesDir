@@ -77,7 +77,25 @@ class updateTodo(graphene.Mutation):
             todo_updated = False
             return updateTodo(todo_updated=todo_updated)        
 
+class deleteTodo(graphene.Mutation):
+    class Arguments:
+        user_id = graphene.ID(required=True)
+        todo_id = graphene.ID(required=True)
 
+    todo_deleted = graphene.Boolean()
+
+    @classmethod
+    def mutate(cls, root, info, user_id, todo_id):
+        user = ExtendUser.objects.get(id=user_id)
+        if user:
+            todo = Todo.objects.get(id=todo_id)
+            if todo:
+                todo_deleted = True
+                todo.delete()
+                return todo_deleted
+            else:
+                todo_deleted = False
+                return todo_deleted
 
 class TodoQuery(graphene.ObjectType):
     all_todos = graphene.List(TodoType, user_id=graphene.ID(), order=graphene.String())
@@ -91,5 +109,6 @@ class Query(UserQuery, MeQuery, TodoQuery, graphene.ObjectType):
 class Mutation(AuthMutation, graphene.ObjectType):
     add_todo = addTodo.Field()
     update_todo = updateTodo.Field()
+    delete_todo = deleteTodo.Field()
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
