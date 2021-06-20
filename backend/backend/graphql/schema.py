@@ -17,7 +17,7 @@ class TodoType(DjangoObjectType):
         model = Todo
         fields = '__all__'
 
-class TodoMutation(graphene.Mutation):
+class addTodo(graphene.Mutation):
     class Arguments:
         user_id = graphene.ID(required=True)
         title = graphene.String(required=True)
@@ -37,10 +37,47 @@ class TodoMutation(graphene.Mutation):
             todo_created = True
             todo = Todo(user_id=user_id, title=title, description=description, thumbnail=thumbnail, background_color=background_color, start_date=start_date, end_date=end_date)
             todo.save()
-            return TodoMutation(todo_created=todo_created, todo=todo)
+            return addTodo(todo_created=todo_created, todo=todo)
         else:
             todo_created = False
-            return TodoMutation(todo_created=todo_created)
+            return addTodo(todo_created=todo_created)
+
+class updateTodo(graphene.Mutation):
+    class Arguments:
+        user_id = graphene.ID(required=True)
+        todo_id = graphene.ID(required=True)
+        title = graphene.String()
+        description = graphene.String()
+        thumbnail = graphene.String()
+        background_color = graphene.String()
+        start_date = graphene.DateTime()
+        end_date = graphene.DateTime()
+
+    todo = graphene.Field(TodoType)
+    todo_updated = graphene.Boolean()
+
+    @classmethod
+    def mutate(cls, root, info, user_id, todo_id, title, description, thumbnail, background_color, start_date, end_date):
+        user = ExtendUser.objects.filter(id=user_id).first()
+        if user:
+            todo_updated = True
+            todo = Todo.objects.get(id=todo_id)
+            if todo:
+                todo.title = title
+                todo.description = description
+                todo.thumbnail = thumbnail
+                todo.background_color = background_color
+                todo.start_date = start_date
+                todo.end_date = end_date
+                todo.save()
+                return updateTodo(todo_updated=todo_updated, todo=todo)
+            else:
+                return updateTodo(todo_updated=todo_updated)
+        else:
+            todo_updated = False
+            return updateTodo(todo_updated=todo_updated)        
+
+
 
 class TodoQuery(graphene.ObjectType):
     all_todos = graphene.List(TodoType, user_id=graphene.ID(), order=graphene.String())
@@ -52,6 +89,7 @@ class Query(UserQuery, MeQuery, TodoQuery, graphene.ObjectType):
     pass
 
 class Mutation(AuthMutation, graphene.ObjectType):
-    add_todo = TodoMutation.Field() 
+    add_todo = addTodo.Field()
+    update_todo = updateTodo.Field()
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
