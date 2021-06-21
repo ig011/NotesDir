@@ -1,0 +1,16 @@
+# Global
+venv
+.vscode
+
+# Backend
+backend/db.sqlite3
+backend/users/migrations
+backend/todos/migrations
+backend/backend/__pycache__
+backend/graphql/__pycache__
+
+# Frontend
+frontend/.next
+frontend/.env
+frontend/.eslintrc
+frontend/node_modules
