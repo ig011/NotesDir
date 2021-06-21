@@ -10,7 +10,6 @@ export default function Home() {
         <meta name="description" content="NotesDir WebApp" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Navbar />
     </div>
   );
 }

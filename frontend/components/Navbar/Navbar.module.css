@@ -1,7 +1,66 @@
 .container {
   display: grid;
-  grid-template-rows: repeat(5, auto);
+  grid-template-columns: 20% 60% 20%;
   background-color: rgb(32, 43, 48);
+  color: white;
   min-height: 70px;
   height: 70px;
+  box-shadow: 0 0 2px black;
+}
+
+.logo {
+  grid-column: 1;
+  align-self: center;
+  justify-self: center;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.links {
+  grid-column: 2;
+  align-self: center;
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+  text-transform: uppercase;
+}
+
+.links a {
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.links a:hover {
+  color: rgb(116, 192, 207);
+  transform: scale(1.1);
+}
+
+.account {
+  grid-column: 3;
+  align-self: center;
+  justify-self: center;
+}
+
+.account .btn1 {
+  margin: 5px;
+  border: none;
+  padding: 10px;
+  width: 80px;
+  background-color: transparent;
+  border: 2px white solid;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.account .btn1:hover {
+  background-color: white;
+  color: rgb(32, 43, 48);
+  box-shadow: 0 0 10px white;
 }
