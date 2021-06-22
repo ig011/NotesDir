@@ -18,7 +18,9 @@ function Navbar() {
         </Link>
       </div>
       <div className={styles.account}>
-        <button className={styles.btn1}>Sign up</button>
+        <Link href="/signup">
+          <button className={styles.btn1}>Sign up</button>
+        </Link>
         <button className={styles.btn1}>Sign in</button>
       </div>
     </header>
