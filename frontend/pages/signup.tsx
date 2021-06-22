@@ -10,9 +10,9 @@ function Signup() {
           <input type="text" placeholder="Username" />
           <input type="text" placeholder="Password" />
           <input type="text" placeholder="Retype password" />
-          <div>
+          <div className={styles.cb}>
             <input type="checkbox" className={styles.checkbox} />
-            <label>Agree</label>
+            <label>I've understand requirements</label>
           </div>
           <button className={styles.btn1} type="submit">
             SIGN UP

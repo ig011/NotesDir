@@ -3,7 +3,7 @@
   padding: 0px;
   display: grid;
   grid-template-columns: 50% 50%;
-  height: 50%;
+  height: 80%;
   background-color: rgb(219, 219, 219);
 }
 
@@ -20,25 +20,43 @@
 }
 
 .form {
-  padding: 10px;
-  min-height: 70%;
-  height: 70%;
-  width: 50%;
+  padding: 30px;
+  border-radius: 10px;
+  height: fit-content;
+  width: 60%;
   background-color: white;
   display: grid;
   grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  grid-gap: 15px;
   box-shadow: 0 0 1px black;
 }
 
 .form input {
-  height: 60px;
+  align-self: center;
+  justify-self: center;
   font-size: 16px;
+  width: 100%;
+  height: 60px;
+}
+
+.cb {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.cb .checkbox {
+  width: 20px;
+}
+
+.cb label {
+  margin-left: 10px;
 }
 
 .btn1 {
-  margin-top: 20px;
+  align-self: center;
   width: 40%;
-  height: 50px;
+  height: 60px;
   border: none;
   box-shadow: 0 0 10px white;
   background-color: rgb(32, 43, 48);
