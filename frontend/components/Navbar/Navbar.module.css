@@ -1,6 +1,6 @@
 .container {
   display: grid;
-  grid-template-columns: 20% 60% 20%;
+  grid-template-columns: 20% 50% 30%;
   background-color: rgb(32, 43, 48);
   color: white;
   min-height: 70px;
@@ -37,11 +37,6 @@
   font-weight: bold;
 }
 
-/* .links a:hover {
-  color: rgb(116, 192, 207);
-  transform: scale(1.1);
-} */
-
 .links a:hover {
   border: 2px white solid;
   box-shadow: 0 0 5px white;
@@ -72,4 +67,9 @@
   background-color: white;
   color: rgb(32, 43, 48);
   box-shadow: 0 0 10px white;
+}
+
+@media screen and (max-width: 1300px) {
+  .container {
+  }
 }
