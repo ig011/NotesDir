@@ -24,4 +24,13 @@ export const REGISTER_USER = gql`
   }
 `;
 
+export const VERIFY_USER = gql`
+  mutation verifyUser($token: String!) {
+    verifyAccount(token: $token) {
+      success
+      errors
+    }
+  }
+`;
+
 export default client;

@@ -1,0 +1,21 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0px;
+  padding: 0px;
+  min-height: 90vh;
+  height: 90vh;
+}
+
+.verified {
+  background-color: whitesmoke;
+  font-size: 18px;
+  padding: 50px;
+  border-radius: 20px;
+  box-shadow: 0 0 1px black;
+}
+
+.notverified {
+  font-size: 24px;
+}
