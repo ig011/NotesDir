@@ -10,14 +10,14 @@ const schema = yup.object().shape({
   password: yup
     .string()
     .min(8, "Password is too short - should be 8 chars minimum.")
-    .required("Password field is required"),
+    .required("Password field is required."),
   password2: yup
     .string()
-    .oneOf([yup.ref("password"), null], "Passwords must match"),
+    .oneOf([yup.ref("password"), null], "Passwords must match."),
   isAccepted: yup
     .bool()
     .required()
-    .isFalse("You have to accept the requiremenets"),
+    .isTrue("You have to accept the requirements."),
 });
 
 function Signup() {
@@ -43,6 +43,7 @@ function Signup() {
       </div>
       <div className={styles.right}>
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+          <h3>Create account</h3>
           <input type="text" placeholder="Username" {...register("username")} />
           {errors?.username && (
             <p className={styles.errors}>{errors.username.message}</p>
@@ -58,15 +59,15 @@ function Signup() {
           />
           {errors?.password && (
             <p className={styles.errors}>{errors.password.message}</p>
-          )}{" "}
-          {errors?.password2 && (
-            <p className={styles.errors}>{errors.password2.message}</p>
           )}
           <input
             type="password"
             placeholder="Re-type password"
             {...register("password2")}
           />
+          {errors?.password2 && (
+            <p className={styles.errors}>{errors.password2.message}</p>
+          )}
           <div className={styles.cb}>
             <input
               type="checkbox"

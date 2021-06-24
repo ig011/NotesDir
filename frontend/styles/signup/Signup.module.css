@@ -47,10 +47,16 @@
   height: fit-content;
   width: 60%;
   background-color: white;
-  display: grid;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
-  grid-gap: 15px;
+  display: flex;
+  flex-direction: column;
   box-shadow: 0 0 1px black;
+}
+
+.form h3 {
+  margin: 0px;
+  padding: 0px;
+  margin-bottom: 20px;
+  text-shadow: 0 0 1px black;
 }
 
 .form input {
@@ -62,6 +68,7 @@
   text-align: left;
   transition: all 0.2s ease-in-out;
   padding: 5px;
+  margin-bottom: 10px;
 }
 
 .form input:focus {
@@ -71,17 +78,18 @@
 
 .errors {
   margin: 0px;
-  margin-left: 10px;
   padding: 0px;
+  margin-bottom: 10px;
   color: rgb(255, 0, 0);
   text-shadow: 0 0 1px black;
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .cb {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  height: 30px;
+  margin-bottom: 10px;
 }
 
 .cb .checkbox {
@@ -89,7 +97,10 @@
 }
 
 .cb label {
-  margin-left: 10px;
+  margin: 0px;
+  padding: 0px;
+  margin-left: 5px;
+  font-size: 14px;
 }
 
 .btn1 {
