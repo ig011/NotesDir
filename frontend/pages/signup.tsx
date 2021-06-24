@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import styles from "../styles/signup/Signup.module.css";
+import client from "./api/apollo-client";
 
 const schema = yup.object().shape({
   username: yup.string().required("Username field cannot be blank"),
@@ -28,7 +29,9 @@ function Signup() {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const onSubmit = (data: any) => console.log(data);
+  const onSubmit = (data: any) => {
+    console.log(data);
+  };
 
   return (
     <div className={styles.container}>
