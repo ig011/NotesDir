@@ -2,20 +2,24 @@ import Head from "next/head";
 import "../styles/globals.css";
 import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
+import client from "./api/apollo-client";
 import type { AppProps } from "next/app";
+import { ApolloProvider } from "@apollo/client";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <div className="container">
-      <Head>
-        <title>NotesDir</title>
-        <meta name="description" content="NotesDir WebApp" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <Navbar />
-      <Component {...pageProps} />
-      {/* <Footer /> */}
-    </div>
+    <ApolloProvider client={client}>
+      <div className="container">
+        <Head>
+          <title>NotesDir</title>
+          <meta name="description" content="NotesDir WebApp" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <Navbar />
+        <Component {...pageProps} />
+        {/* <Footer /> */}
+      </div>
+    </ApolloProvider>
   );
 }
 export default MyApp;

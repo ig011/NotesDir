@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import styles from "../styles/signup/Signup.module.css";
-import client from "./api/apollo-client";
+import { useMutation } from "@apollo/client";
+import { REGISTER_USER } from "./api/apollo-client";
 
 const schema = yup.object().shape({
   username: yup.string().required("Username field cannot be blank"),
-  email: yup.string().required("Email field is required"),
+  email: yup
+    .string()
+    .email("Email address is invalid.")
+    .required("Email field is required"),
   password: yup
     .string()
     .min(8, "Password is too short - should be 8 chars minimum.")
@@ -29,8 +33,22 @@ function Signup() {
   } = useForm({
     resolver: yupResolver(schema),
   });
+
+  const [userCreated, setUserCreated] = useState(false);
+  const [registerUser] = useMutation(REGISTER_USER);
+
   const onSubmit = (data: any) => {
     console.log(data);
+    registerUser({
+      variables: {
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        password2: data.password2,
+      },
+    })
+      .then((res) => setUserCreated(res.data.register?.success))
+      .catch((error) => setUserCreated(false));
   };
 
   return (
@@ -45,6 +63,12 @@ function Signup() {
         </div>
       </div>
       <div className={styles.right}>
+        {userCreated && (
+          <div className={styles.usercreated}>
+            User account has been created. Check your email for veryfing your
+            account.
+          </div>
+        )}
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
           <h3>Create account</h3>
           <input type="text" placeholder="Username" {...register("username")} />
