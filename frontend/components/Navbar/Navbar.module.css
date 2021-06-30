@@ -45,7 +45,8 @@
 .account {
   grid-column: 3;
   align-self: center;
-  justify-self: center;
+  justify-self: flex-end;
+  margin-right: 20px;
 }
 
 .account .btn1 {
