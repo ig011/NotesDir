@@ -7,7 +7,7 @@ import { useMutation } from "@apollo/client";
 import { LOGIN_USER } from "./api/apollo-client";
 
 const schema = yup.object().shape({
-  username: yup.string().required("Username field cannot be blank"),
+  username: yup.string().required("Username field cannot be blank."),
   password: yup.string().required("Password field is required."),
 });
 
@@ -21,14 +21,19 @@ function Signin() {
   });
 
   const [logInUser] = useMutation(LOGIN_USER);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isValid, setIsValid] = useState(true);
 
   const onSubmit = async (data: any) => {
-    console.log(data);
+    setIsSubmitting(true);
     await logInUser({
       variables: { username: data.username, password: data.password },
     })
-      .then((response) => console.log(response))
+      .then((response) => {
+        setIsValid(response?.data.logInUser.success);
+      })
       .catch((error) => console.log(error));
+    setIsSubmitting(false);
   };
 
   return (
@@ -49,6 +54,9 @@ function Signin() {
           {errors?.username && (
             <p className={styles.errors}>{errors.username.message}</p>
           )}
+          {!isValid && !errors?.username && (
+            <p className={styles.errors}>Wrong username - may do not exist.</p>
+          )}
           <input
             type="password"
             placeholder="Password"
@@ -57,7 +65,10 @@ function Signin() {
           {errors?.password && (
             <p className={styles.errors}>{errors.password.message}</p>
           )}
-          <button className={styles.btn1} type="submit">
+          {!isValid && !errors?.password && (
+            <p className={styles.errors}>Wrong password.</p>
+          )}
+          <button className={styles.btn1} type="submit" disabled={isSubmitting}>
             LOG IN
           </button>
         </form>

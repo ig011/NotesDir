@@ -35,11 +35,12 @@
   transition: all 0.2s ease;
   cursor: pointer;
   font-weight: bold;
+  border: 2px rgb(32, 43, 48) solid;
 }
 
 .links a:hover {
   border: 2px white solid;
-  box-shadow: 0 0 5px white;
+  box-shadow: 0 0 2px white;
 }
 
 .account {
@@ -67,7 +68,7 @@
 .account .btn1:hover {
   background-color: white;
   color: rgb(32, 43, 48);
-  box-shadow: 0 0 10px white;
+  box-shadow: 0 0 5px white;
 }
 
 @media screen and (max-width: 1300px) {

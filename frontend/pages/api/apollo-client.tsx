@@ -44,4 +44,15 @@ export const LOGIN_USER = gql`
   }
 `;
 
+export const GET_CURRENT_USER = gql`
+  query {
+    me {
+      id
+      username
+      lastLogin
+      dateJoined
+    }
+  }
+`;
+
 export default client;
