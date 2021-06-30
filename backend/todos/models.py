@@ -1,7 +1,5 @@
 from django.db import models
 from datetime import datetime
-
-from django.db.models.base import Model
 from users.models import ExtendUser
 
 # Create your models here.
@@ -15,6 +13,9 @@ class Todo(models.Model):
     start_date = models.DateTimeField(blank=True, null=True, default=datetime.now())
     end_date = models.DateTimeField(default=datetime.now())
     user = models.ForeignKey(ExtendUser, on_delete=models.CASCADE)
+    slug = models.SlugField(max_length=250, unique=True)
+    is_done = models.BooleanField(default=False)
+    is_archived = models.BooleanField(default=False)
 
     def __str__(self):
         return ''.join([self.user.username, ' | ', self.title, ' | expire at: ', str(self.end_date)])
