@@ -33,9 +33,15 @@ export const VERIFY_USER = gql`
   }
 `;
 
-// export const LOGIN_USER = gql`
-//   mutation loginUser($username: String, $email: String, $password: String!) {
-
-//   }`;
+export const LOGIN_USER = gql`
+  mutation logInUser($username: String, $password: String!) {
+    logInUser(username: $username, password: $password) {
+      token
+      refreshToken
+      success
+      errors
+    }
+  }
+`;
 
 export default client;

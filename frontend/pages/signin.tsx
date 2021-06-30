@@ -4,14 +4,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import styles from "../styles/signup/Signup.module.css";
 import { useMutation } from "@apollo/client";
-import { REGISTER_USER } from "./api/apollo-client";
+import { LOGIN_USER } from "./api/apollo-client";
 
 const schema = yup.object().shape({
   username: yup.string().required("Username field cannot be blank"),
-  password: yup
-    .string()
-    .min(8, "Password is too short - should be 8 chars minimum.")
-    .required("Password field is required."),
+  password: yup.string().required("Password field is required."),
 });
 
 function Signin() {
@@ -23,8 +20,15 @@ function Signin() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data: any) => {
+  const [logInUser] = useMutation(LOGIN_USER);
+
+  const onSubmit = async (data: any) => {
     console.log(data);
+    await logInUser({
+      variables: { username: data.username, password: data.password },
+    })
+      .then((response) => console.log(response))
+      .catch((error) => console.log(error));
   };
 
   return (

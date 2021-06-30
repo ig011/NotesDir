@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -65,8 +66,8 @@ function Signup() {
       <div className={styles.right}>
         {userCreated && (
           <div className={styles.usercreated}>
-            User account has been created. Check your email for veryfing your
-            account.
+            User account has been created. Check your email in order to verify
+            your account.
           </div>
         )}
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
@@ -109,6 +110,13 @@ function Signup() {
           <button className={styles.btn1} type="submit">
             SIGN UP
           </button>
+          <label className={styles.hasaccount}>
+            Already has an account?{" "}
+            <Link href="/signin">
+              <strong>Log in</strong>
+            </Link>{" "}
+            instead
+          </label>
         </form>
       </div>
     </div>

@@ -3,7 +3,7 @@
   padding: 0px;
   display: grid;
   grid-template-columns: 50% 50%;
-  height: 80%;
+  height: 90%;
   background-color: rgb(219, 219, 219);
 }
 
@@ -47,7 +47,7 @@
   padding: 15px;
   border: 1px rgb(93, 153, 93) solid;
   margin-bottom: 10px;
-  width: 90%;
+  width: 60%;
   font-size: 12px;
   text-align: justify;
 }
@@ -114,6 +114,7 @@
 }
 
 .btn1 {
+  margin-top: 10px;
   align-self: center;
   width: 100%;
   height: 60px;
@@ -131,6 +132,17 @@
 
 .btn1:hover {
   box-shadow: 0 0 5px black;
+}
+
+.hasaccount {
+  margin-top: 10px;
+  font-size: 13px;
+  text-align: justify;
+  text-shadow: 0 0 1px rgb(32, 43, 48);
+}
+
+.hasaccount strong {
+  cursor: pointer;
 }
 
 @media screen and (max-width: 1100px) {
