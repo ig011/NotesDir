@@ -1,0 +1,35 @@
+.container {
+  padding: 10px;
+  min-height: 300px;
+  height: 300px;
+  min-width: 300px;
+  width: 300px;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 0 0 2px black;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-gap: 10px;
+}
+
+.info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  grid-gap: 10px;
+}
+
+.info label {
+  font-size: 12px;
+  text-shadow: 0 0 1px black;
+}
+
+.info .createdat {
+  grid-column: 1;
+  justify-self: flex-start;
+}
+
+.info .lastedited {
+  grid-column: 2;
+  justify-self: flex-end;
+}
