@@ -15,7 +15,7 @@
 .info {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  align-items: center;
+  align-items: flex-end;
   grid-gap: 10px;
 }
 
