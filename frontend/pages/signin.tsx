@@ -48,10 +48,11 @@ function Signin() {
     <div className={styles.container}>
       <div className={styles.left}>
         <div className={styles.textdiv}>
-          <div className={styles.title}>Register your account today!</div>
+          <div className={styles.title}>JOIN US AND START USING NotesDir!</div>
           <div className={styles.description}>
-            In order to use <strong>NotesDir</strong> Web application you need
-            to create an account first!
+            This website has been created in order to help people in managing
+            their own tasks. You can add new todo thing, set the time and all
+            the design stuff.
           </div>
         </div>
       </div>
