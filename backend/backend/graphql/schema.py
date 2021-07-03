@@ -11,6 +11,7 @@ class AuthMutation(graphene.ObjectType):
     register = mutations.Register.Field()
     verify_account = mutations.VerifyAccount.Field()
     log_in_user = mutations.ObtainJSONWebToken.Field()
+    refresh_Token = mutations.RefreshToken.Field()
 
 class TodoType(DjangoObjectType):
     class Meta:
