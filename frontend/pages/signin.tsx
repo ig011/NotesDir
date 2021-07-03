@@ -23,6 +23,7 @@ function Signin() {
   const [logInUser] = useMutation(LOGIN_USER);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isValid, setIsValid] = useState(true);
+  const [verifyAccount, setVerifyAccount] = useState(false);
 
   const onSubmit = async (data: any) => {
     setIsSubmitting(true);
@@ -30,6 +31,13 @@ function Signin() {
       variables: { username: data.username, password: data.password },
     })
       .then((response) => {
+        if (
+          response.data?.logInUser.errors.nonFieldErrors.code.includes(
+            "not_verifed"
+          )
+        )
+          setVerifyAccount(true);
+        else setVerifyAccount(false);
         setIsValid(response?.data.logInUser.success);
       })
       .catch((error) => console.log(error));
@@ -48,6 +56,11 @@ function Signin() {
         </div>
       </div>
       <div className={styles.right}>
+        {verifyAccount && (
+          <div className={styles.verifyaccount}>
+            You have to verify your account first. Check your e-mail.
+          </div>
+        )}
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
           <h3>Log in</h3>
           <input type="text" placeholder="Username" {...register("username")} />

@@ -1,8 +1,9 @@
 from django.db.models.base import Model
 import graphene
 from graphene_django import DjangoObjectType, fields
-from graphql_auth.schema import UserQuery, MeQuery
 from graphql_auth import mutations
+from graphql_auth.schema import UserQuery, MeQuery
+from graphql_auth.decorators import login_required
 from todos.models import Todo
 from users.models import ExtendUser
 from datetime import datetime
@@ -10,8 +11,10 @@ from datetime import datetime
 class AuthMutation(graphene.ObjectType):
     register = mutations.Register.Field()
     verify_account = mutations.VerifyAccount.Field()
+    update_account = mutations.UpdateAccount.Field()
     log_in_user = mutations.ObtainJSONWebToken.Field()
-    refresh_Token = mutations.RefreshToken.Field()
+    refresh_token = mutations.RefreshToken.Field()
+    verify_token = mutations.VerifyToken.Field()
 
 class TodoType(DjangoObjectType):
     class Meta:
@@ -31,6 +34,7 @@ class addTodo(graphene.Mutation):
     todo = graphene.Field(TodoType)
     todo_created = graphene.Boolean()
 
+    @login_required
     @classmethod
     def mutate(cls, root, info, user_id, title, description, thumbnail, background_color, start_date, end_date):
         user = ExtendUser.objects.filter(id=user_id).first()
@@ -57,6 +61,7 @@ class updateTodo(graphene.Mutation):
     todo = graphene.Field(TodoType)
     todo_updated = graphene.Boolean()
 
+    @login_required
     @classmethod
     def mutate(cls, root, info, user_id, todo_id, title, description, thumbnail, background_color, start_date, end_date):
         user = ExtendUser.objects.filter(id=user_id).first()
@@ -85,6 +90,7 @@ class deleteTodo(graphene.Mutation):
 
     todo_deleted = graphene.Boolean()
 
+    @login_required
     @classmethod
     def mutate(cls, root, info, user_id, todo_id):
         user = ExtendUser.objects.get(id=user_id)
@@ -101,6 +107,7 @@ class deleteTodo(graphene.Mutation):
 class TodoQuery(graphene.ObjectType):
     all_todos = graphene.List(TodoType, user_id=graphene.ID(), order=graphene.String())
 
+    @login_required
     def resolve_all_todos(root, info, user_id, order):
         return Todo.objects.filter(user=user_id).order_by(order)
 

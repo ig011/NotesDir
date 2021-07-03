@@ -39,12 +39,11 @@ function Signup() {
   const [registerUser] = useMutation(REGISTER_USER);
 
   const onSubmit = (data: any) => {
-    console.log(data);
     registerUser({
       variables: {
         username: data.username,
         email: data.email,
-        password: data.password,
+        password1: data.password,
         password2: data.password2,
       },
     })

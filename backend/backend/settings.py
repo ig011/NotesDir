@@ -150,4 +150,8 @@ GRAPHQL_JWT = {
     'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=7),
 }
 
+GRAPHQL_AUTH = {
+    'ALLOW_LOGIN_NOT_VERIFIED': False,
+}
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
