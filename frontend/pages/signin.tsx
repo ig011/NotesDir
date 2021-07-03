@@ -32,12 +32,13 @@ function Signin() {
     })
       .then((response) => {
         if (
-          response.data?.logInUser.errors.nonFieldErrors.code.includes(
-            "not_verifed"
-          )
+          response.data?.logInUser.errors.nonFieldErrors[0].code.includes("not")
         )
           setVerifyAccount(true);
-        else setVerifyAccount(false);
+        else {
+          setVerifyAccount(false);
+          console.log("User has logged in!");
+        }
         setIsValid(response?.data.logInUser.success);
       })
       .catch((error) => console.log(error));
