@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 function Navbar() {
-  const [isLogged, setIsLogged] = useState(true);
+  const [isLogged, setIsLogged] = useState(false);
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const classes = useStyles();
 
@@ -51,33 +51,34 @@ function Navbar() {
           </>
         ) : (
           <div className={classes.root}>
-            <Avatar className={classes.purple}>U</Avatar>
             <button
               className={styles.btn2}
-              onMouseEnter={() => setShowAccountMenu(true)}
-              onMouseLeave={() => setShowAccountMenu(false)}
+              onClick={() => setShowAccountMenu(!showAccountMenu)}
             >
-              account -
+              <Avatar className={classes.purple}>U</Avatar>
+              account
             </button>
           </div>
         )}
       </div>
-      {showAccountMenu && (<div className={styles.accountmenucontainer}>
-        <div className={styles.element}>
-          <Link href="/">
-            <a>My account</a>
-          </Link>
-          <Link href="/">
-            <a>Todos</a>
-          </Link>
-          <Link href="/">
-            <a>Settings</a>
-          </Link>
-          <Link href="/">
-            <a>Sign out</a>
-          </Link>
+      {showAccountMenu && isLogged && (
+        <div className={styles.accountmenu}>
+          <div className={styles.elements}>
+            <Link href="/">
+              <a onClick={() => setShowAccountMenu(false)}>My account</a>
+            </Link>
+            <Link href="/">
+              <a onClick={() => setShowAccountMenu(false)}>Todos</a>
+            </Link>
+            <Link href="/">
+              <a onClick={() => setShowAccountMenu(false)}>Settings</a>
+            </Link>
+            <Link href="/">
+              <a onClick={() => setShowAccountMenu(false)}>Sign out</a>
+            </Link>
+          </div>
         </div>
-      </div>}
+      )}
     </header>
   );
 }

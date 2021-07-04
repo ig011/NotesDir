@@ -80,11 +80,54 @@
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px;
 }
 
 .account .btn2:hover {
   background-color: white;
   color: rgb(32, 43, 48);
+  box-shadow: 0 0 5px white;
+}
+
+.accountmenu {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 70px;
+  right: 0px;
+  width: 165px;
+  padding: 5px;
+  border-radius: 0px 0px 10px 10px;
+  background-color: rgb(32, 43, 48);
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: bold;
+  box-shadow: 0 0 2px black;
+}
+
+.accountmenu .elements {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  width: 98%;
+}
+
+.accountmenu .elements a {
+  width: 100%;
+  padding: 10px;
+  border-radius: 3px;
+  background-color: rgb(44, 59, 66);
+  transition: all 0.2s ease;
+}
+
+.accountmenu .elements a:hover {
+  color: rgb(32, 43, 48);
+  background-color: white;
   box-shadow: 0 0 5px white;
 }
 
