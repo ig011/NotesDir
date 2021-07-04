@@ -3,8 +3,9 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import styles from "../styles/signup/Signup.module.css";
-import { useMutation, useQuery } from "@apollo/client";
-import { LOGIN_USER, GET_CURRENT_USER } from "./api/apollo-client";
+import { useMutation } from "@apollo/client";
+import { LOGIN_USER } from "./api/apollo-client";
+import { useRouter } from "next/router";
 
 const schema = yup.object().shape({
   username: yup.string().required("Username field cannot be blank."),
@@ -21,10 +22,10 @@ function Signin() {
   });
 
   const [logInUser] = useMutation(LOGIN_USER);
-  const currentUser = useQuery(GET_CURRENT_USER, { pollInterval: 5000 });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isValid, setIsValid] = useState(true);
   const [verifyAccount, setVerifyAccount] = useState(false);
+  const router = useRouter();
 
   const onSubmit = async (data: any) => {
     setIsSubmitting(true);
@@ -42,6 +43,11 @@ function Signin() {
           setVerifyAccount(false);
         }
         setIsValid(response?.data.logInUser.success);
+        if (isValid) {
+          router.push({
+            pathname: "/",
+          });
+        }
       })
       .catch((error) => console.log(error));
     setIsSubmitting(false);

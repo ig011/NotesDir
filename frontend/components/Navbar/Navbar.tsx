@@ -4,7 +4,10 @@ import styles from "./Navbar.module.css";
 import Avatar from "@material-ui/core/Avatar";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { deepPurple } from "@material-ui/core/colors";
-import { client } from "../../pages/api/apollo-client";
+import client from "../../pages/api/apollo-client";
+import { useQuery } from "@apollo/client";
+import { UserInfo, GET_CURRENT_USER } from "../../pages/api/apollo-client";
+import { useContainer } from "unstated-next";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -22,9 +25,19 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 function Navbar() {
-  const [isLogged, setIsLogged] = useState(false);
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const classes = useStyles();
+
+  const currentUser = useQuery(GET_CURRENT_USER, { pollInterval: 5000 });
+  const { isLogged, username, changeIsLogged, changeUsername } =
+    useContainer(UserInfo);
+
+  if (currentUser.data?.me) {
+    changeIsLogged(true);
+    changeUsername(currentUser.data?.me.username);
+  } else {
+    changeIsLogged(false);
+  }
 
   return (
     <header className={styles.container}>
@@ -56,8 +69,8 @@ function Navbar() {
               className={styles.btn2}
               onClick={() => setShowAccountMenu(!showAccountMenu)}
             >
-              <Avatar className={classes.purple}>U</Avatar>
-              account
+              <Avatar className={classes.purple}>{username[0]}</Avatar>
+              {username}
             </button>
           </div>
         )}
