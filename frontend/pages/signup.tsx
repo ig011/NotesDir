@@ -37,9 +37,11 @@ function Signup() {
 
   const [userCreated, setUserCreated] = useState(false);
   const [registerUser] = useMutation(REGISTER_USER);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const onSubmit = (data: any) => {
-    registerUser({
+  const onSubmit = async (data: any) => {
+    setIsSubmitting(true);
+    await registerUser({
       variables: {
         username: data.username,
         email: data.email,
@@ -49,6 +51,7 @@ function Signup() {
     })
       .then((res) => setUserCreated(res.data.register?.success))
       .catch((error) => setUserCreated(false));
+    setIsSubmitting(false);
   };
 
   return (
@@ -106,7 +109,7 @@ function Signup() {
           {errors?.isAccepted && (
             <p className={styles.errors}>{errors.isAccepted.message}</p>
           )}
-          <button className={styles.btn1} type="submit">
+          <button className={styles.btn1} type="submit" disabled={isSubmitting}>
             SIGN UP
           </button>
           <label className={styles.hasaccount}>

@@ -53,7 +53,7 @@ function Signin() {
       <div className={styles.left}>
         <div className={styles.textdiv}>
           <div className={styles.title}>
-            JOIN US AND START USING NotesDir! {currentUser.data.username}
+            JOIN US AND START USING NotesDir! {currentUser.data?.username}
           </div>
           <div className={styles.description}>
             This website has been created in order to help people in managing
