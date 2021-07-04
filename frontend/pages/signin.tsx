@@ -21,7 +21,7 @@ function Signin() {
   });
 
   const [logInUser] = useMutation(LOGIN_USER);
-  const currentUser = useQuery(GET_CURRENT_USER, { pollInterval: 1000 });
+  const currentUser = useQuery(GET_CURRENT_USER, { pollInterval: 5000 });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isValid, setIsValid] = useState(true);
   const [verifyAccount, setVerifyAccount] = useState(false);
@@ -42,7 +42,6 @@ function Signin() {
           setVerifyAccount(false);
         }
         setIsValid(response?.data.logInUser.success);
-        if (isValid) console.log(response.data?.logInUser);
       })
       .catch((error) => console.log(error));
     setIsSubmitting(false);
@@ -52,9 +51,7 @@ function Signin() {
     <div className={styles.container}>
       <div className={styles.left}>
         <div className={styles.textdiv}>
-          <div className={styles.title}>
-            JOIN US AND START USING NotesDir! {currentUser.data?.username}
-          </div>
+          <div className={styles.title}>JOIN US AND START USING NotesDir!</div>
           <div className={styles.description}>
             This website has been created in order to help people in managing
             their own tasks. You can add new todo thing, set the time and all
