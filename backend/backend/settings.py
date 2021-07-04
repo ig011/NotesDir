@@ -151,7 +151,7 @@ GRAPHQL_JWT = {
 }
 
 GRAPHQL_AUTH = {
-    'ALLOW_LOGIN_NOT_VERIFIED': False,
+    'ALLOW_LOGIN_NOT_VERIFIED': True,
 }
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

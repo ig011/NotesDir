@@ -71,6 +71,23 @@
   box-shadow: 0 0 5px white;
 }
 
+.account .btn2 {
+  border: none;
+  background-color: transparent;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.account .btn2:hover {
+  background-color: white;
+  color: rgb(32, 43, 48);
+  box-shadow: 0 0 5px white;
+}
+
 @media screen and (max-width: 1300px) {
   .container {
   }
