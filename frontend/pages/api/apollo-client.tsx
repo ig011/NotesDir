@@ -3,6 +3,7 @@ import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
 const client = new ApolloClient({
   uri: "http://localhost:8000/graphql",
   cache: new InMemoryCache(),
+  credentials: "same-origin",
 });
 
 export const REGISTER_USER = gql`
@@ -50,7 +51,6 @@ export const GET_CURRENT_USER = gql`
       id
       username
       lastLogin
-      dateJoined
     }
   }
 `;

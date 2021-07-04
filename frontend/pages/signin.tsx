@@ -3,8 +3,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import styles from "../styles/signup/Signup.module.css";
-import { useMutation } from "@apollo/client";
-import { LOGIN_USER } from "./api/apollo-client";
+import { useMutation, useQuery } from "@apollo/client";
+import { LOGIN_USER, GET_CURRENT_USER } from "./api/apollo-client";
 
 const schema = yup.object().shape({
   username: yup.string().required("Username field cannot be blank."),
@@ -21,6 +21,7 @@ function Signin() {
   });
 
   const [logInUser] = useMutation(LOGIN_USER);
+  const currentUser = useQuery(GET_CURRENT_USER, { pollInterval: 1000 });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isValid, setIsValid] = useState(true);
   const [verifyAccount, setVerifyAccount] = useState(false);
@@ -32,14 +33,16 @@ function Signin() {
     })
       .then((response) => {
         if (
-          response.data?.logInUser.errors.nonFieldErrors[0].code.includes("not")
+          response.data?.logInUser.errors?.nonFieldErrors[0].code.includes(
+            "not"
+          )
         )
           setVerifyAccount(true);
         else {
           setVerifyAccount(false);
-          console.log("User has logged in!");
         }
         setIsValid(response?.data.logInUser.success);
+        if (isValid) console.log(response.data?.logInUser);
       })
       .catch((error) => console.log(error));
     setIsSubmitting(false);
@@ -49,7 +52,9 @@ function Signin() {
     <div className={styles.container}>
       <div className={styles.left}>
         <div className={styles.textdiv}>
-          <div className={styles.title}>JOIN US AND START USING NotesDir!</div>
+          <div className={styles.title}>
+            JOIN US AND START USING NotesDir! {currentUser.data.username}
+          </div>
           <div className={styles.description}>
             This website has been created in order to help people in managing
             their own tasks. You can add new todo thing, set the time and all

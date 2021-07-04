@@ -4,6 +4,7 @@ import styles from "./Navbar.module.css";
 import Avatar from "@material-ui/core/Avatar";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { deepPurple } from "@material-ui/core/colors";
+import { client } from "../../pages/api/apollo-client";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -74,7 +75,14 @@ function Navbar() {
               <a onClick={() => setShowAccountMenu(false)}>Settings</a>
             </Link>
             <Link href="/">
-              <a onClick={() => setShowAccountMenu(false)}>Sign out</a>
+              <a
+                onClick={() => {
+                  client.resetStore();
+                  setShowAccountMenu(false);
+                }}
+              >
+                Sign out
+              </a>
             </Link>
           </div>
         </div>
