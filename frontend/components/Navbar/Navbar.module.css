@@ -84,6 +84,8 @@
   align-items: center;
   gap: 10px;
   padding: 5px;
+  padding-left: 15px;
+  padding-right: 20px;
 }
 
 .account .btn2:hover {
@@ -100,7 +102,7 @@
   top: 70px;
   right: 0px;
   width: 165px;
-  padding: 5px;
+  padding: 10px;
   border-radius: 0px 0px 10px 10px;
   background-color: rgb(32, 43, 48);
   text-transform: uppercase;
@@ -121,7 +123,6 @@
   width: 100%;
   padding: 10px;
   border-radius: 3px;
-  background-color: rgb(44, 59, 66);
   transition: all 0.2s ease;
 }
 

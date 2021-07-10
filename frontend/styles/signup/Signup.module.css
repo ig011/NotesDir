@@ -114,13 +114,19 @@
 }
 
 .cb .checkbox {
-  width: 20px;
+  width: 15px;
+  height: 15px;
+  padding: 0px;
+  margin: 0px;
+  margin-right: 8px;
+  vertical-align: bottom;
+  position: relative;
+  top: -1px;
 }
 
 .cb label {
-  margin: 0px;
   padding: 0px;
-  margin-left: 5px;
+  margin: 0px;
   font-size: 14px;
 }
 

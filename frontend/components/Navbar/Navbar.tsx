@@ -28,7 +28,7 @@ function Navbar() {
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const classes = useStyles();
 
-  const currentUser = useQuery(GET_CURRENT_USER, { pollInterval: 5000 });
+  const currentUser = useQuery(GET_CURRENT_USER);
   const { isLogged, username, changeIsLogged, changeUsername } =
     useContainer(UserInfo);
 
