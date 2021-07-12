@@ -3,8 +3,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import styles from "../styles/signup/Signup.module.css";
-import { useMutation } from "@apollo/client";
-import { LOGIN_USER } from "./api/apollo-client";
+import { useMutation, useQuery } from "@apollo/client";
+import { GET_CURRENT_USER, LOGIN_USER } from "./api/apollo-client";
 import { useRouter } from "next/router";
 
 const schema = yup.object().shape({
@@ -22,6 +22,7 @@ function Signin() {
   });
 
   const [logInUser] = useMutation(LOGIN_USER);
+  const UserLogged = useQuery(GET_CURRENT_USER);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isValid, setIsValid] = useState(true);
   const [verifyAccount, setVerifyAccount] = useState(false);
@@ -37,16 +38,17 @@ function Signin() {
           response.data?.logInUser.errors?.nonFieldErrors[0].code.includes(
             "not"
           )
-        )
+        ) {
           setVerifyAccount(true);
-        else {
+        } else {
           setVerifyAccount(false);
-        }
-        setIsValid(response?.data.logInUser.success);
-        if (isValid) {
-          router.push({
-            pathname: "/",
-          });
+          UserLogged.refetch();
+          setIsValid(response?.data.logInUser.success);
+          if (isValid) {
+            router.push({
+              pathname: "/",
+            });
+          }
         }
       })
       .catch((error) => console.log(error));

@@ -81,4 +81,16 @@ export const GET_CURRENT_USER = gql`
   }
 `;
 
+export const QUERY_GET_TODOS = gql`
+  query {
+    allTodos($userId: ID!, $order: String) {
+      allTodos(userId: $userId, order: $order) {
+        id
+        title
+        description
+      }
+    }
+  }
+`;
+
 export default client;

@@ -12,7 +12,7 @@ class Todo(models.Model):
     start_date = models.DateTimeField(blank=True, null=True, auto_now=True)
     end_date = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(ExtendUser, on_delete=models.CASCADE)
-    slug = models.SlugField(max_length=250, unique=True)
+    slug = models.SlugField(max_length=250, unique=True, default=str(title).lower().replace(' ', '-'))
     is_done = models.BooleanField(default=False)
     is_archived = models.BooleanField(default=False)
 
