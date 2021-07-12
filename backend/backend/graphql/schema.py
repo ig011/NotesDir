@@ -1,3 +1,4 @@
+from django.contrib.auth import login
 from django.db.models.base import Model
 import graphene
 from graphene_django import DjangoObjectType, fields
@@ -105,11 +106,12 @@ class deleteTodo(graphene.Mutation):
                 return todo_deleted
 
 class TodoQuery(graphene.ObjectType):
-    all_todos = graphene.List(TodoType, user_id=graphene.ID(), order=graphene.String())
+    all_todos = graphene.List(TodoType)
 
     @login_required
-    def resolve_all_todos(root, info, user_id, order):
-        return Todo.objects.filter(user=user_id).order_by(order)
+    def resolve_all_todos(root, info):
+        print(info.context.user)
+        return Todo.objects.all()
 
 class Query(UserQuery, MeQuery, TodoQuery, graphene.ObjectType):
     pass
