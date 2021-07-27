@@ -168,12 +168,18 @@
 }
 
 .hasaccount strong {
+  margin-left: 2px;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-@media screen and (max-width: 1100px) {
+.hasaccount strong:hover {
+  text-shadow: 0 0 2px black;
+}
+
+@media screen and (max-width: 1500px) {
   .form {
-    width: 90%;
+    width: 70%;
   }
 
   .usercreated,
