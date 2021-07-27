@@ -132,7 +132,8 @@
   box-shadow: 0 0 5px white;
 }
 
-@media screen and (max-width: 1300px) {
+@media screen and (max-width: 934px) {
   .container {
+    
   }
 }

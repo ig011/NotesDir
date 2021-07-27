@@ -115,9 +115,8 @@ function Signup() {
           <label className={styles.hasaccount}>
             Already has an account?{" "}
             <Link href="/signin">
-              <strong>Log in</strong>
+              <strong>Log in!</strong>
             </Link>{" "}
-            instead
           </label>
         </form>
       </div>

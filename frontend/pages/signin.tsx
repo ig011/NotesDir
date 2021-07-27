@@ -6,6 +6,7 @@ import styles from "../styles/signup/Signup.module.css";
 import { useMutation, useQuery } from "@apollo/client";
 import { GET_CURRENT_USER, LOGIN_USER } from "./api/apollo-client";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const schema = yup.object().shape({
   username: yup.string().required("Username field cannot be blank."),
@@ -96,6 +97,7 @@ function Signin() {
           <button className={styles.btn1} type="submit" disabled={isSubmitting}>
             LOG IN
           </button>
+          <label className={styles.hasaccount}>Don't you have an account? <Link href="/signup"><strong>Register!</strong></Link></label>
         </form>
       </div>
     </div>

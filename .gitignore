@@ -8,12 +8,16 @@ backend/users/migrations
 backend/todos/migrations
 backend/backend/__pycache__
 backend/graphql/__pycache__
+backend/backend/graphql/__pycache__
+backend/users/__pycache__
+backend/todos/__pycache__
 
 # Frontend
 frontend/.next
 frontend/.env
 frontend/.eslintrc
 frontend/node_modules
+frontend/public
 
 # Docker
 docker-compose.yml

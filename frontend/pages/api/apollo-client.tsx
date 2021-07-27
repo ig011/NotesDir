@@ -26,7 +26,7 @@ function userInfo() {
 export let UserInfo = createContainer(userInfo);
 
 // Create React Apollo Client - GraphQL
-const client = new ApolloClient({
+export const client = new ApolloClient({
   uri: "http://localhost:8000/graphql",
   credentials: "include",
   cache: new InMemoryCache(),
@@ -82,13 +82,11 @@ export const GET_CURRENT_USER = gql`
 `;
 
 export const QUERY_GET_TODOS = gql`
-  query {
-    allTodos($userId: ID!, $order: String) {
-      allTodos(userId: $userId, order: $order) {
-        id
-        title
-        description
-      }
+  query allTodos($userId: ID!) {
+    allTodos(userId: $userId) {
+      id
+      title
+      description
     }
   }
 `;
