@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import styles from "./Navbar.module.css";
 import Avatar from "@material-ui/core/Avatar";
@@ -8,6 +8,7 @@ import client from "../../pages/api/apollo-client";
 import { useQuery } from "@apollo/client";
 import { UserInfo, GET_CURRENT_USER } from "../../pages/api/apollo-client";
 import { useContainer } from "unstated-next";
+import { useRouter } from "next/router";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -24,8 +25,28 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-function Navbar() {
+function Navbar(props: any) {
   const [showAccountMenu, setShowAccountMenu] = useState(false);
+  const router = useRouter();
+
+  const useOutsideAlerter = (ref: any) => {
+    useEffect(() => {
+      function handleClickOutside(event: any) {
+        if (ref.current && !ref.current.contains(event.target)) {
+          setShowAccountMenu(false);
+        }
+      }
+
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [ref]);
+  };
+
+  const wrapperRef = useRef(null);
+  useOutsideAlerter(wrapperRef);
+
   const classes = useStyles();
 
   const currentUser = useQuery(GET_CURRENT_USER);
@@ -37,7 +58,17 @@ function Navbar() {
     changeUsername(currentUser.data?.me.username);
   } else {
     changeIsLogged(false);
+    changeUsername("");
   }
+
+  const handleSignOut = () => {
+    client.resetStore();
+    setShowAccountMenu(false);
+    currentUser.refetch();
+    changeIsLogged(false);
+    changeUsername("");
+    router.push({ pathname: "/signin" });
+  };
 
   return (
     <header className={styles.container}>
@@ -67,7 +98,7 @@ function Navbar() {
           <div className={classes.root}>
             <button
               className={styles.btn2}
-              onClick={() => setShowAccountMenu(!showAccountMenu)}
+              onClick={() => setShowAccountMenu(true)}
             >
               <Avatar className={classes.purple}>{username[0]}</Avatar>
               {username}
@@ -76,7 +107,8 @@ function Navbar() {
         )}
       </div>
       {showAccountMenu && isLogged && (
-        <div className={styles.accountmenu}>
+        <div className={styles.accountmenu} ref={wrapperRef}>
+          <div className={styles.arrowup} />
           <div className={styles.elements}>
             <Link href="/">
               <a onClick={() => setShowAccountMenu(false)}>My account</a>
@@ -88,14 +120,7 @@ function Navbar() {
               <a onClick={() => setShowAccountMenu(false)}>Settings</a>
             </Link>
             <Link href="/">
-              <a
-                onClick={() => {
-                  client.resetStore();
-                  setShowAccountMenu(false);
-                }}
-              >
-                Sign out
-              </a>
+              <a onClick={handleSignOut}>Sign out</a>
             </Link>
           </div>
         </div>

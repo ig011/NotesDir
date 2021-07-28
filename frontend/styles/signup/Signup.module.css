@@ -48,7 +48,7 @@
   padding: 15px;
   border: 1px rgb(93, 153, 93) solid;
   margin-bottom: 10px;
-  width: 60%;
+  width: 50%;
   font-size: 12px;
   text-align: justify;
 }
@@ -184,7 +184,7 @@
 
   .usercreated,
   .verifyaccount {
-    width: 90%;
+    width: 70%;
   }
 }
 

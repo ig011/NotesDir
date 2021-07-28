@@ -5,7 +5,6 @@ import styles from "../styles/home/Home.module.css";
 import { useRouter } from "next/router";
 import { UserInfo } from "./api/apollo-client";
 import { useContainer } from "unstated-next";
-import { client, GET_CURRENT_USER } from "./api/apollo-client";
 
 export default function Home() {
   const { isLogged, username, changeIsLogged, changeUsername } =
@@ -18,7 +17,7 @@ export default function Home() {
         pathname: "/signin",
       });
     }
-  }, []);
+  }, [isLogged]);
 
   return (
     <>
@@ -30,13 +29,4 @@ export default function Home() {
       ) : null}
     </>
   );
-}
-
-export async function getStaticProps(context: any) {
-  const userData = (await client.query({ query: GET_CURRENT_USER })).data;
-  console.log(userData);
-
-  return {
-    props: {},
-  };
 }

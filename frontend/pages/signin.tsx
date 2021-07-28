@@ -4,9 +4,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import styles from "../styles/signup/Signup.module.css";
 import { useMutation, useQuery } from "@apollo/client";
-import { GET_CURRENT_USER, LOGIN_USER } from "./api/apollo-client";
+import { UserInfo, GET_CURRENT_USER, LOGIN_USER } from "./api/apollo-client";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { useContainer } from "unstated-next";
 
 const schema = yup.object().shape({
   username: yup.string().required("Username field cannot be blank."),
@@ -21,6 +22,9 @@ function Signin() {
   } = useForm({
     resolver: yupResolver(schema),
   });
+
+  const { isLogged, username, changeIsLogged, changeUsername } =
+    useContainer(UserInfo);
 
   const [logInUser] = useMutation(LOGIN_USER);
   const UserLogged = useQuery(GET_CURRENT_USER);
@@ -44,6 +48,8 @@ function Signin() {
         } else {
           setVerifyAccount(false);
           UserLogged.refetch();
+          changeIsLogged(true);
+          changeUsername(UserLogged.data?.me.username);
           setIsValid(response?.data.logInUser.success);
           if (isValid) {
             router.push({
@@ -97,7 +103,12 @@ function Signin() {
           <button className={styles.btn1} type="submit" disabled={isSubmitting}>
             LOG IN
           </button>
-          <label className={styles.hasaccount}>Don't you have an account? <Link href="/signup"><strong>Register!</strong></Link></label>
+          <label className={styles.hasaccount}>
+            Don't you have an account?{" "}
+            <Link href="/signup">
+              <strong>Register!</strong>
+            </Link>
+          </label>
         </form>
       </div>
     </div>
