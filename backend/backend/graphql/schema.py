@@ -1,6 +1,7 @@
 from django.contrib.auth import login
 from django.db.models.base import Model
 import graphene
+import graphql_jwt
 from graphene_django import DjangoObjectType, fields
 from graphql_auth import mutations
 from graphql_auth.schema import UserQuery, MeQuery
@@ -13,7 +14,8 @@ class AuthMutation(graphene.ObjectType):
     register = mutations.Register.Field()
     verify_account = mutations.VerifyAccount.Field()
     update_account = mutations.UpdateAccount.Field()
-    log_in_user = mutations.ObtainJSONWebToken.Field()
+    log_in_user = graphql_jwt.ObtainJSONWebToken.Field()
+    log_out_user = graphql_jwt.DeleteJSONWebTokenCookie.Field()
     refresh_token = mutations.RefreshToken.Field()
     verify_token = mutations.VerifyToken.Field()
 

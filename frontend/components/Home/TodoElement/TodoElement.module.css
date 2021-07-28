@@ -2,8 +2,8 @@
   position: relative;
   min-height: 300px;
   max-height: 300px;
-  min-width: 300px;
-  width: 300px;
+  min-width: 400px;
+  width: 400px;
   background-color: white;
   box-shadow: 0 0 4px black;
   display: flex;
@@ -41,7 +41,7 @@
 }
 
 .todoBottomDiv {
-  min-height: 60px;
+  min-height: 80px;
 }
 
 .category {

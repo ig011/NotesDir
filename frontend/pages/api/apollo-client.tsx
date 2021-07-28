@@ -1,6 +1,7 @@
-import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
-import { createContainer } from "unstated-next";
+import { ApolloClient, gql, InMemoryCache, useMutation } from "@apollo/client";
+import { createContainer, useContainer } from "unstated-next";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 // Create state management
 function userInfo() {
@@ -61,12 +62,19 @@ export const VERIFY_USER = gql`
 `;
 
 export const LOGIN_USER = gql`
-  mutation logInUser($username: String, $password: String!) {
+  mutation logInUser($username: String!, $password: String!) {
     logInUser(username: $username, password: $password) {
       token
       refreshToken
-      success
-      errors
+      payload
+    }
+  }
+`;
+
+export const LOGOUT_USER = gql`
+  mutation logOutUser {
+    logOutUser {
+      deleted
     }
   }
 `;
@@ -92,5 +100,22 @@ export const QUERY_GET_TODOS = gql`
     }
   }
 `;
+
+export const updateUserInfo = async () => {
+  const { changeIsLogged, changeUsername } = useContainer(UserInfo);
+
+  await client
+    .mutate({ mutation: GET_CURRENT_USER })
+    .then((response) => {
+      if (response.data?.me) {
+        changeIsLogged(true);
+        changeUsername(response.data?.me.username);
+      } else {
+        changeIsLogged(false);
+        changeUsername("");
+      }
+    })
+    .catch();
+};
 
 export default client;

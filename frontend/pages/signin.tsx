@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import styles from "../styles/signup/Signup.module.css";
 import { useMutation, useQuery } from "@apollo/client";
-import { UserInfo, GET_CURRENT_USER, LOGIN_USER } from "./api/apollo-client";
+import { UserInfo, LOGIN_USER, updateUserInfo } from "./api/apollo-client";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useContainer } from "unstated-next";
@@ -27,7 +27,6 @@ function Signin() {
     useContainer(UserInfo);
 
   const [logInUser] = useMutation(LOGIN_USER);
-  const UserLogged = useQuery(GET_CURRENT_USER);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isValid, setIsValid] = useState(true);
   const [verifyAccount, setVerifyAccount] = useState(false);
@@ -39,23 +38,16 @@ function Signin() {
       variables: { username: data.username, password: data.password },
     })
       .then((response) => {
-        if (
-          response.data?.logInUser.errors?.nonFieldErrors[0].code.includes(
-            "not"
-          )
-        ) {
-          setVerifyAccount(true);
-        } else {
+        if (response.data?.logInUser.payload.username) {
           setVerifyAccount(false);
-          setIsValid(response?.data.logInUser.success);
-          if (isValid) {
-            router.push({
-              pathname: "/",
-            });
-          }
+          changeIsLogged(true);
+          changeUsername(response.data?.logInUser.payload.username);
+          router.push({
+            pathname: "/about",
+          });
         }
       })
-      .catch((error) => console.log(error));
+      .catch();
     setIsSubmitting(false);
   };
 

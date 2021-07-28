@@ -27,10 +27,10 @@ function TodoElement(props: any) {
         <div className={styles.category}>CATEGORY XXXXXXX</div>
         <div className={styles.info}>
           <label className={styles.createdat}>
-            Created at {props.data?.createdAt}
+            Created at {new Date(props.data?.createdAt).toLocaleString()}
           </label>
           <label className={styles.lastedited}>
-            Last edited {props.data?.modifiedAt}
+            Last edited {new Date(props.data?.modifiedAt).toLocaleString()}
           </label>
         </div>
       </div>

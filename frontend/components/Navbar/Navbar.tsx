@@ -1,14 +1,14 @@
-import React, { useState, useRef, useEffect } from "react";
-import Link from "next/link";
+import React, { useState } from "react";
 import styles from "./Navbar.module.css";
 import Avatar from "@material-ui/core/Avatar";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { deepPurple } from "@material-ui/core/colors";
-import client from "../../pages/api/apollo-client";
 import { useQuery } from "@apollo/client";
 import { UserInfo, GET_CURRENT_USER } from "../../pages/api/apollo-client";
 import { useContainer } from "unstated-next";
+import Link from "next/link";
 import { useRouter } from "next/router";
+import AccountMenu from "./AccountMenu/AccountMenu";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -29,24 +29,6 @@ function Navbar(props: any) {
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const router = useRouter();
 
-  const useOutsideAlerter = (ref: any) => {
-    useEffect(() => {
-      function handleClickOutside(event: any) {
-        if (ref.current && !ref.current.contains(event.target)) {
-          setShowAccountMenu(false);
-        }
-      }
-
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, [ref]);
-  };
-
-  const wrapperRef = useRef(null);
-  useOutsideAlerter(wrapperRef);
-
   const classes = useStyles();
 
   const currentUser = useQuery(GET_CURRENT_USER);
@@ -60,15 +42,6 @@ function Navbar(props: any) {
     changeIsLogged(false);
     changeUsername("");
   }
-
-  const handleSignOut = () => {
-    client.resetStore();
-    setShowAccountMenu(false);
-    currentUser.refetch();
-    changeIsLogged(false);
-    changeUsername("");
-    router.push({ pathname: "/signin" });
-  };
 
   return (
     <header className={styles.container}>
@@ -107,23 +80,7 @@ function Navbar(props: any) {
         )}
       </div>
       {showAccountMenu && isLogged && (
-        <div className={styles.accountmenu} ref={wrapperRef}>
-          <div className={styles.arrowup} />
-          <div className={styles.elements}>
-            <Link href="/">
-              <a onClick={() => setShowAccountMenu(false)}>My account</a>
-            </Link>
-            <Link href="/">
-              <a onClick={() => setShowAccountMenu(false)}>Todos</a>
-            </Link>
-            <Link href="/">
-              <a onClick={() => setShowAccountMenu(false)}>Settings</a>
-            </Link>
-            <Link href="/">
-              <a onClick={handleSignOut}>Sign out</a>
-            </Link>
-          </div>
-        </div>
+        <AccountMenu setShowAccountMenu={setShowAccountMenu} />
       )}
     </header>
   );
