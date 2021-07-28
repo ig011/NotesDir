@@ -47,9 +47,6 @@ function Signin() {
           setVerifyAccount(true);
         } else {
           setVerifyAccount(false);
-          UserLogged.refetch();
-          changeIsLogged(true);
-          changeUsername(UserLogged.data?.me.username);
           setIsValid(response?.data.logInUser.success);
           if (isValid) {
             router.push({

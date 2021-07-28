@@ -1,11 +1,19 @@
+import { useQuery } from "@apollo/client";
 import React from "react";
+import { QUERY_GET_TODOS } from "../../../pages/api/apollo-client";
 import TodoElement from "../TodoElement/TodoElement";
 import styles from "./TodosContainer.module.css";
 
 function TodosContainer() {
+  const { loading, data } = useQuery(QUERY_GET_TODOS);
+
   return (
     <div className={styles.container}>
-      <TodoElement />
+      {!loading
+        ? data.allTodos.map((todo: any) => (
+            <TodoElement data={todo} key={todo.id} />
+          ))
+        : null}
     </div>
   );
 }

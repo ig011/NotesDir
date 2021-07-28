@@ -108,7 +108,6 @@ class deleteTodo(graphene.Mutation):
 class TodoQuery(graphene.ObjectType):
     all_todos = graphene.List(TodoType)
 
-    @login_required
     def resolve_all_todos(root, info):
         print(info.context.user)
         return Todo.objects.all()
