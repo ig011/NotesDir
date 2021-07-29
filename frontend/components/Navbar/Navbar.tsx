@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Navbar.module.css";
 import Avatar from "@material-ui/core/Avatar";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { deepPurple } from "@material-ui/core/colors";
-import { useQuery } from "@apollo/client";
-import { UserInfo, GET_CURRENT_USER } from "../../pages/api/apollo-client";
+import {
+  client,
+  UserInfo,
+  GET_CURRENT_USER,
+} from "../../pages/api/apollo-client";
 import { useContainer } from "unstated-next";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -28,44 +31,73 @@ const useStyles = makeStyles((theme: Theme) =>
 function Navbar(props: any) {
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const router = useRouter();
-
   const classes = useStyles();
 
-  const currentUser = useQuery(GET_CURRENT_USER);
   const { isLogged, username, changeIsLogged, changeUsername } =
     useContainer(UserInfo);
 
-  if (currentUser.data?.me) {
-    changeIsLogged(true);
-    changeUsername(currentUser.data?.me.username);
-  } else {
-    changeIsLogged(false);
-    changeUsername("");
-  }
+  const getCurrentUser = async () => {
+    await client
+      .query({ query: GET_CURRENT_USER })
+      .then((response) => {
+        changeIsLogged(true);
+        changeUsername(response.data?.me.username);
+      })
+      .catch();
+  };
+
+  useEffect(() => {
+    getCurrentUser();
+  }, []);
+
+  const navElements = [
+    {
+      name: "Todo list",
+      path: "/",
+    },
+    {
+      name: "About",
+      path: "/about",
+    },
+    {
+      name: "Contact",
+      path: "/contact",
+    },
+  ];
+
+  const navButtons = [
+    {
+      name: "Sign up",
+      path: "/signup",
+    },
+    {
+      name: "Sign in",
+      path: "/signin",
+    },
+  ];
 
   return (
     <header className={styles.container}>
       <div className={styles.logo}>NotesDir</div>
       <div className={styles.links}>
-        <Link href="/">
-          <a>Todo list</a>
-        </Link>
-        <Link href="/about">
-          <a>About</a>
-        </Link>
-        <Link href="/contact">
-          <a>Contact</a>
-        </Link>
+        {navElements.map((elem) => {
+          return (
+            <Link href={elem.path}>
+              <a>{elem.name}</a>
+            </Link>
+          );
+        })}
       </div>
       <div className={styles.account}>
         {!isLogged ? (
           <>
-            <Link href="/signup">
-              <button className={styles.btn1}>Sign up</button>
-            </Link>
-            <Link href="/signin">
-              <button className={styles.btn1}>Sign in</button>
-            </Link>
+            {navButtons.map((elem) => {
+              return (
+                <Link href={elem.path}>
+                  <button className={styles.btn1}>{elem.name}</button>
+                </Link>
+              );
+            })}
           </>
         ) : (
           <div className={classes.root}>

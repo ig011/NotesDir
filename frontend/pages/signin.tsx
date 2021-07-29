@@ -43,7 +43,7 @@ function Signin() {
           changeIsLogged(true);
           changeUsername(response.data?.logInUser.payload.username);
           router.push({
-            pathname: "/about",
+            pathname: "/",
           });
         }
       })
