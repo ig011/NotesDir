@@ -40,8 +40,13 @@ function Navbar(props: any) {
     await client
       .query({ query: GET_CURRENT_USER })
       .then((response) => {
-        changeIsLogged(true);
-        changeUsername(response.data?.me.username);
+        if (response.data?.me?.username) {
+          changeIsLogged(true);
+          changeUsername(response.data?.me.username);
+        } else {
+          changeIsLogged(false);
+          changeUsername("");
+        }
       })
       .catch();
   };

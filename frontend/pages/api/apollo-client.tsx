@@ -8,6 +8,7 @@ function userInfo() {
   let [username, setUsername] = useState("");
   let [id, setId] = useState("");
   let [isLogged, setIsLogged] = useState(false);
+  let [isLoggedOut, setIsLoggedOut] = useState(false);
 
   const changeUsername = (username: string) => {
     setUsername(username);
@@ -21,7 +22,20 @@ function userInfo() {
     setIsLogged(logged);
   };
 
-  return { username, id, isLogged, changeUsername, changeId, changeIsLogged };
+  const changeIsLoggedOut = (loggedOut: boolean) => {
+    setIsLoggedOut(loggedOut);
+  };
+
+  return {
+    username,
+    id,
+    isLogged,
+    isLoggedOut,
+    changeUsername,
+    changeId,
+    changeIsLogged,
+    changeIsLoggedOut,
+  };
 }
 
 export let UserInfo = createContainer(userInfo);

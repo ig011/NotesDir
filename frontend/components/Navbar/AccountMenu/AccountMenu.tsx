@@ -29,7 +29,7 @@ function AccountMenu(props: any) {
   const wrapperRef = useRef(null);
   useOutsideAlerter(wrapperRef);
 
-  const { isLogged, username, changeIsLogged, changeUsername } =
+  const { changeIsLogged, changeUsername, changeIsLoggedOut } =
     useContainer(UserInfo);
 
   const router = useRouter();
@@ -41,6 +41,7 @@ function AccountMenu(props: any) {
         if (response.data) {
           props.setShowAccountMenu(false);
           changeIsLogged(false);
+          changeIsLoggedOut(true);
           changeUsername("");
           router.push({ pathname: "/signin" });
           client.resetStore();

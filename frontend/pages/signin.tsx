@@ -23,7 +23,7 @@ function Signin() {
     resolver: yupResolver(schema),
   });
 
-  const { isLogged, username, changeIsLogged, changeUsername } =
+  const { isLoggedOut, changeIsLogged, changeUsername, changeIsLoggedOut } =
     useContainer(UserInfo);
 
   const [logInUser] = useMutation(LOGIN_USER);
@@ -41,6 +41,7 @@ function Signin() {
         if (response.data?.logInUser.payload.username) {
           setVerifyAccount(false);
           changeIsLogged(true);
+          changeIsLoggedOut(false);
           changeUsername(response.data?.logInUser.payload.username);
           router.push({
             pathname: "/",
@@ -64,6 +65,11 @@ function Signin() {
         </div>
       </div>
       <div className={styles.right}>
+        {isLoggedOut && (
+          <div className={styles.usercreated}>
+            You have been succesfully logged out!
+          </div>
+        )}
         {verifyAccount && (
           <div className={styles.verifyaccount}>
             You have to verify your account first. Check your e-mail.
