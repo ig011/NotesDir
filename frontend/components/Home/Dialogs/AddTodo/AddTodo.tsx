@@ -1,5 +1,15 @@
+import { useMutation } from "@apollo/client";
 import React, { useEffect, useRef } from "react";
+import { MUTATION_ADD_TODO } from "../../../../pages/api/apollo-client";
 import styles from "./AddTodo.module.css";
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+const schema = yup.object().shape({
+  title: yup.string().required("Title cannot be blank."),
+  content: yup.string().required("Content cannot be blank."),
+});
 
 function AddTodo(props: any) {
   const useOutsideAlerter = (ref: any) => {
@@ -20,24 +30,64 @@ function AddTodo(props: any) {
   const wrapperRef = useRef(null);
   useOutsideAlerter(wrapperRef);
 
+  const handleClickCancel = () => {
+    props.setShowAddTodo(false);
+  };
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const [addTodo] = useMutation(MUTATION_ADD_TODO);
+  const handleClickAdd = async (data: any) => {
+    console.log(data);
+    await addTodo({
+      variables: { title: data.title, description: data.description },
+    })
+      .then()
+      .catch();
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.dialogcontainer} ref={wrapperRef}>
         <div className={styles.dialogtitle}>Add todo</div>
-        <div className={styles.dialog}>
+        <form className={styles.dialog} onSubmit={handleSubmit(handleClickAdd)}>
           <div className={styles.dialogelement}>
             <label>Title</label>
             <input
               className={styles.inputtitle}
               type="text"
-              placeholder="Enter new todo title"
+              placeholder="Enter todo title"
+              {...register("title")}
             />
           </div>
+          {errors?.title && (
+            <p className={styles.errors}>{errors.title.message}</p>
+          )}
           <div className={styles.dialogelement}>
             <label>Content</label>
-            <textarea />
+            <textarea className={styles.areatext} {...register("content")} />
           </div>
-        </div>
+          {errors?.content && (
+            <p className={styles.errors}>{errors.content.message}</p>
+          )}
+          <div className={styles.dialogelement}>
+            <div className={styles.buttons}>
+              <button className={`${styles.btn} ${styles.btnAdd}`}>Add</button>
+              <button
+                className={`${styles.btn} ${styles.btnCancel}`}
+                onClick={handleClickCancel}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   );

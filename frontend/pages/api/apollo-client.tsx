@@ -70,7 +70,6 @@ export const VERIFY_USER = gql`
   mutation verifyUser($token: String!) {
     verifyAccount(token: $token) {
       success
-      errors
     }
   }
 `;
@@ -111,6 +110,30 @@ export const QUERY_GET_TODOS = gql`
       description
       createdAt
       modifiedAt
+    }
+  }
+`;
+
+export const MUTATION_ADD_TODO = gql`
+  mutation addTodo(
+    $backgroundColor: String
+    $description: String!
+    $endDate: DateTime!
+    $startDate: DateTime!
+    $thumbnail: String
+    $title: String!
+    $userId: ID!
+  ) {
+    addTodo(
+      backgroundColor: $backgroundColor
+      description: $description
+      endDate: $endDate
+      startDate: $startDate
+      thumbnail: $thumbnail
+      title: $title
+      userId: $userId
+    ) {
+      todoCreated
     }
   }
 `;

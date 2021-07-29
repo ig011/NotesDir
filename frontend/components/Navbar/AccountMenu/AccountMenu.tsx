@@ -54,7 +54,7 @@ function AccountMenu(props: any) {
     <div className={styles.accountmenu} ref={wrapperRef}>
       <div className={styles.arrowup} />
       <div className={styles.elements}>
-        <Link href="/">
+        <Link href="/account">
           <a onClick={() => props.setShowAccountMenu(false)}>My account</a>
         </Link>
         <Link href="/">

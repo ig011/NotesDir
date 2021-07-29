@@ -14,7 +14,7 @@
 .dialogcontainer {
   width: 70%;
   max-width: 900px;
-  height: 50%;
+  height: fit-content;
   border-radius: 20px;
   padding: 30px;
   background-color: white;
@@ -62,4 +62,55 @@
   border: 1px rgba(0, 0, 0, 0.5) solid;
   font-size: 18px;
   font-weight: bold;
+}
+
+.areatext {
+  align-self: center;
+  width: 98%;
+  height: 150px;
+  padding: 10px;
+  font-size: 16px;
+  resize: none;
+  border-radius: 5px;
+  border: 1px rgba(0, 0, 0, 0.5) solid;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-right: 20px;
+}
+
+.btn {
+  padding: 15px;
+  padding-left: 25px;
+  padding-right: 25px;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 10px;
+  background-color: rgb(50, 50, 50);
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 1);
+}
+
+.btnAdd {
+  background-color: rgb(85, 155, 221);
+}
+
+.btnCancel {
+  background-color: rgb(72, 72, 150);
+}
+
+.errors {
+  margin: 0;
+  padding: 0;
+  margin-left: 20px;
+  color: rgb(255, 0, 0);
+  text-shadow: 0 0 1px black;
+  font-size: 12px;
 }

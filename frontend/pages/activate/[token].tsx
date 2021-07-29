@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { VERIFY_USER } from "../api/apollo-client";
 import { useRouter } from "next/router";
 import { useMutation } from "@apollo/client";
