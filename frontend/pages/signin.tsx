@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -51,6 +51,12 @@ function Signin() {
       .catch();
     setIsSubmitting(false);
   };
+
+  useEffect(() => {
+    return () => {
+      changeIsLoggedOut(false);
+    };
+  }, []);
 
   return (
     <div className={styles.container}>
