@@ -29,9 +29,11 @@ function TodoElement(props: any) {
           <label className={styles.createdat}>
             Created at {new Date(props.data?.createdAt).toLocaleString()}
           </label>
-          <label className={styles.lastedited}>
-            Last edited {new Date(props.data?.modifiedAt).toLocaleString()}
-          </label>
+          {props.data?.createdAt !== props.data?.modifiedAt && (
+            <label className={styles.lastedited}>
+              Last edited {new Date(props.data?.modifiedAt).toLocaleString()}
+            </label>
+          )}
         </div>
       </div>
     </div>

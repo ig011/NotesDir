@@ -2,12 +2,11 @@ from django.contrib.auth import login
 from django.db.models.base import Model
 import graphene
 import graphql_jwt
-from graphene_django import DjangoObjectType, fields
+from graphene_django import DjangoObjectType
 from graphql_auth import mutations
 from graphql_auth.schema import UserQuery, MeQuery
-from graphql_auth.decorators import login_required
 from todos.models import Todo
-from users.models import ExtendUser
+from users.models import ExtendUser, UserInformation
 from datetime import datetime
 
 class AuthMutation(graphene.ObjectType):
@@ -18,6 +17,11 @@ class AuthMutation(graphene.ObjectType):
     log_out_user = graphql_jwt.DeleteJSONWebTokenCookie.Field()
     refresh_token = mutations.RefreshToken.Field()
     verify_token = mutations.VerifyToken.Field()
+
+class UserInformationType(DjangoObjectType):
+    class Meta:
+        model = UserInformation
+        fields = '__all__'
 
 class TodoType(DjangoObjectType):
     class Meta:
@@ -37,10 +41,10 @@ class addTodo(graphene.Mutation):
     todo = graphene.Field(TodoType)
     todo_created = graphene.Boolean()
 
-    @login_required
+    @graphql_jwt.decorators.login_required
     @classmethod
-    def mutate(cls, root, info, user_id, title, description, thumbnail, background_color, start_date, end_date):
-        user = ExtendUser.objects.filter(id=user_id).first()
+    def mutate(cls, root, info, title, description, thumbnail, background_color, start_date, end_date):
+        user = ExtendUser.objects.filter(username=info.context.username).first()
         if user:
             todo_created = True
             todo = Todo(user_id=user_id, title=title, description=description, thumbnail=thumbnail, background_color=background_color, start_date=start_date, end_date=end_date)
@@ -64,7 +68,7 @@ class updateTodo(graphene.Mutation):
     todo = graphene.Field(TodoType)
     todo_updated = graphene.Boolean()
 
-    @login_required
+    @graphql_jwt.decorators.login_required
     @classmethod
     def mutate(cls, root, info, user_id, todo_id, title, description, thumbnail, background_color, start_date, end_date):
         user = ExtendUser.objects.filter(id=user_id).first()
@@ -93,7 +97,7 @@ class deleteTodo(graphene.Mutation):
 
     todo_deleted = graphene.Boolean()
 
-    @login_required
+    @graphql_jwt.decorators.login_required
     @classmethod
     def mutate(cls, root, info, user_id, todo_id):
         user = ExtendUser.objects.get(id=user_id)
@@ -110,9 +114,20 @@ class deleteTodo(graphene.Mutation):
 class TodoQuery(graphene.ObjectType):
     all_todos = graphene.List(TodoType)
 
+    @graphql_jwt.decorators.login_required
     def resolve_all_todos(root, info):
-        print(info.context.user)
-        return Todo.objects.all()
+        return Todo.objects.all().order_by('-created_at')
+
+
+class UserInformationQuery(graphene.ObjectType):
+    user_information = graphene.List(UserInformationType)
+
+    @graphql_jwt.decarators.login_required
+    def resolve_user_information(root, info):
+        print(info.context.username)
+        return UserInformation.objects.all()
+
+
 
 class Query(UserQuery, MeQuery, TodoQuery, graphene.ObjectType):
     pass

@@ -149,11 +149,13 @@ GRAPHQL_JWT = {
     "JWT_VERIFY_EXPIRATION": True,
     "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
     'JWT_EXPIRATION_DELTA': timedelta(minutes=5),
-    'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=360),
+    'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=120),
 }
 
 GRAPHQL_AUTH = {
     'ALLOW_LOGIN_NOT_VERIFIED': False,
 }
+
+MEDIA_ROOT = Path.joinpath(BASE_DIR, 'static/images')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
