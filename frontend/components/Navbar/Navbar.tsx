@@ -6,14 +6,11 @@ import {
   UserInfo,
   GET_CURRENT_USER,
 } from "../../pages/api/apollo-client";
-import { useContainer } from "unstated-next";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import AccountMenu from "./AccountMenu/AccountMenu";
 
 function Navbar(props: any) {
   const [showAccountMenu, setShowAccountMenu] = useState(false);
-  const router = useRouter();
 
   const {
     isLogged,
@@ -23,7 +20,7 @@ function Navbar(props: any) {
     changeUsername,
     changeIsStaff,
     changeProfilePicture,
-  } = useContainer(UserInfo);
+  } = UserInfo.useContainer();
 
   const getCurrentUser = async () => {
     await client
@@ -33,9 +30,11 @@ function Navbar(props: any) {
           changeIsLogged(true);
           changeUsername(response.data?.me.username);
           changeIsStaff(response.data?.me.isStaff);
-          changeProfilePicture(
-            response.data.me.userinformationSet[0].profilePicture
-          );
+          if (response.data?.me?.userinformationSet[0]?.profilePicture) {
+            changeProfilePicture(
+              response.data.me.userinformationSet[0].profilePicture
+            );
+          } else changeProfilePicture("");
         } else {
           changeIsLogged(false);
           changeUsername("");
@@ -105,7 +104,10 @@ function Navbar(props: any) {
               className={styles.btn2}
               onClick={() => setShowAccountMenu(true)}
             >
-              <Avatar src="E:\Temp\Projects\NotesDir\backend\static\images\admin\Koala.jpg">
+              <Avatar
+                className={styles.avatar}
+                src={profilePicture ? profilePicture : ""}
+              >
                 {username[0]}
               </Avatar>
               {username}

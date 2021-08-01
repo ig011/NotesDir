@@ -19,6 +19,9 @@ class AuthMutation(graphene.ObjectType):
     verify_token = mutations.VerifyToken.Field()
 
 class UserInformationType(DjangoObjectType):
+    def resolve_profile_picture(self, info, **kwargs):
+        return info.context.build_absolute_uri(self.profile_picture.url)
+
     class Meta:
         model = UserInformation
         fields = '__all__'
@@ -120,15 +123,16 @@ class TodoQuery(graphene.ObjectType):
 
 
 class UserInformationQuery(graphene.ObjectType):
-    user_information = graphene.List(UserInformationType)
+    user_informations = graphene.List(UserInformationType)
 
-    def resolve_user_information(root, info):
+    @graphql_jwt.decorators.login_required
+    def resolve_user_informations(self, root, info):
         print(info.context.username)
         return UserInformation.objects.all()
 
 
 class Query(UserQuery, MeQuery, TodoQuery, graphene.ObjectType):
-    pass
+    user_informations = graphene.List(UserInformationQuery)
 
 class Mutation(AuthMutation, graphene.ObjectType):
     add_todo = addTodo.Field()

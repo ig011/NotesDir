@@ -7,7 +7,6 @@ import { useMutation } from "@apollo/client";
 import { UserInfo, LOGIN_USER } from "./api/apollo-client";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { useContainer } from "unstated-next";
 
 const schema = yup.object().shape({
   username: yup.string().required("Username field cannot be blank."),
@@ -23,8 +22,13 @@ function Signin() {
     resolver: yupResolver(schema),
   });
 
-  const { isLoggedOut, changeIsLogged, changeUsername, changeIsLoggedOut } =
-    useContainer(UserInfo);
+  const {
+    isLogged,
+    isLoggedOut,
+    changeIsLogged,
+    changeUsername,
+    changeIsLoggedOut,
+  } = UserInfo.useContainer();
 
   const [logInUser] = useMutation(LOGIN_USER);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -43,8 +47,6 @@ function Signin() {
           changeIsLogged(true);
           changeIsLoggedOut(false);
           changeUsername(response.data?.logInUser.payload.username);
-          router.push("/");
-          console.log("object");
         }
       })
       .catch();
@@ -56,6 +58,10 @@ function Signin() {
       changeIsLoggedOut(false);
     };
   }, []);
+
+  if (isLogged) {
+    router.push("/");
+  }
 
   return (
     <div className={styles.container}>

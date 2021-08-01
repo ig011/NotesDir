@@ -95,6 +95,10 @@
   box-shadow: 0 0 5px white;
 }
 
+.avatar {
+  box-shadow: 0 0 20px black;
+}
+
 @media screen and (max-width: 934px) {
   .container {
   }

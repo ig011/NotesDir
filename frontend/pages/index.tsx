@@ -4,24 +4,13 @@ import TodosContainer from "../components/Home/TodosContainer/TodosContainer";
 import styles from "../styles/home/Home.module.css";
 import { useRouter } from "next/router";
 import { GET_CURRENT_USER, UserInfo, client } from "./api/apollo-client";
-import { useContainer } from "unstated-next";
 
 export default function Home(props: any) {
-  const { isLogged, changeIsLogged, changeUsername } = useContainer(UserInfo);
+  const { isLogged, changeIsLogged, changeUsername } = UserInfo.useContainer();
   const router = useRouter();
 
   useEffect(() => {
-    const getCurrentUser = async () => {
-      await client
-        .query({ query: GET_CURRENT_USER })
-        .then((response) => {
-          if (response.data?.me === null) {
-            router.push("/signin");
-          }
-        })
-        .catch();
-    };
-    getCurrentUser();
+    if (!isLogged) router.push("/signin");
   }, []);
 
   return (
