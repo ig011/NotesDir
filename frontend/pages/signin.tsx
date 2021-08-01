@@ -3,8 +3,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import styles from "../styles/signup/Signup.module.css";
-import { useMutation, useQuery } from "@apollo/client";
-import { UserInfo, LOGIN_USER, updateUserInfo } from "./api/apollo-client";
+import { useMutation } from "@apollo/client";
+import { UserInfo, LOGIN_USER } from "./api/apollo-client";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useContainer } from "unstated-next";
@@ -43,9 +43,8 @@ function Signin() {
           changeIsLogged(true);
           changeIsLoggedOut(false);
           changeUsername(response.data?.logInUser.payload.username);
-          router.push({
-            pathname: "/",
-          });
+          router.push("/");
+          console.log("object");
         }
       })
       .catch();

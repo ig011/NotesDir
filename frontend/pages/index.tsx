@@ -5,9 +5,8 @@ import styles from "../styles/home/Home.module.css";
 import { useRouter } from "next/router";
 import { GET_CURRENT_USER, UserInfo, client } from "./api/apollo-client";
 import { useContainer } from "unstated-next";
-import { isNonNullType } from "graphql";
 
-export default function Home() {
+export default function Home(props: any) {
   const { isLogged, changeIsLogged, changeUsername } = useContainer(UserInfo);
   const router = useRouter();
 
@@ -16,9 +15,8 @@ export default function Home() {
       await client
         .query({ query: GET_CURRENT_USER })
         .then((response) => {
-          console.log(response.data);
           if (response.data?.me === null) {
-            router.push({ pathname: "signin" });
+            router.push("/signin");
           }
         })
         .catch();

@@ -9,6 +9,8 @@ function userInfo() {
   let [id, setId] = useState("");
   let [isLogged, setIsLogged] = useState(false);
   let [isLoggedOut, setIsLoggedOut] = useState(false);
+  let [isStaff, setIsStaff] = useState(false);
+  let [profilePicture, setProfilePicture] = useState("");
 
   const changeUsername = (username: string) => {
     setUsername(username);
@@ -26,15 +28,27 @@ function userInfo() {
     setIsLoggedOut(loggedOut);
   };
 
+  const changeIsStaff = (staff: boolean) => {
+    setIsStaff(staff);
+  };
+
+  const changeProfilePicture = (picture: string) => {
+    setProfilePicture(picture);
+  };
+
   return {
     username,
     id,
     isLogged,
     isLoggedOut,
+    isStaff,
+    profilePicture,
     changeUsername,
     changeId,
     changeIsLogged,
     changeIsLoggedOut,
+    changeIsStaff,
+    changeProfilePicture,
   };
 }
 
@@ -98,6 +112,10 @@ export const GET_CURRENT_USER = gql`
       id
       username
       lastLogin
+      isStaff
+      userinformationSet {
+        profilePicture
+      }
     }
   }
 `;
@@ -137,22 +155,5 @@ export const MUTATION_ADD_TODO = gql`
     }
   }
 `;
-
-export const updateUserInfo = async () => {
-  const { changeIsLogged, changeUsername } = useContainer(UserInfo);
-
-  await client
-    .mutate({ mutation: GET_CURRENT_USER })
-    .then((response) => {
-      if (response.data?.me) {
-        changeIsLogged(true);
-        changeUsername(response.data?.me.username);
-      } else {
-        changeIsLogged(false);
-        changeUsername("");
-      }
-    })
-    .catch();
-};
 
 export default client;

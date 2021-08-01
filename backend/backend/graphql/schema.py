@@ -122,11 +122,9 @@ class TodoQuery(graphene.ObjectType):
 class UserInformationQuery(graphene.ObjectType):
     user_information = graphene.List(UserInformationType)
 
-    @graphql_jwt.decarators.login_required
     def resolve_user_information(root, info):
         print(info.context.username)
         return UserInformation.objects.all()
-
 
 
 class Query(UserQuery, MeQuery, TodoQuery, graphene.ObjectType):

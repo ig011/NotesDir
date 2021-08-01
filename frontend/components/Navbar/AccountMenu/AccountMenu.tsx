@@ -29,7 +29,7 @@ function AccountMenu(props: any) {
   const wrapperRef = useRef(null);
   useOutsideAlerter(wrapperRef);
 
-  const { changeIsLogged, changeUsername, changeIsLoggedOut } =
+  const { isStaff, changeIsLogged, changeUsername, changeIsLoggedOut } =
     useContainer(UserInfo);
 
   const router = useRouter();
@@ -54,6 +54,13 @@ function AccountMenu(props: any) {
     <div className={styles.accountmenu} ref={wrapperRef}>
       <div className={styles.arrowup} />
       <div className={styles.elements}>
+        {isStaff && (
+          <Link href="/administration">
+            <a onClick={() => props.setShowAccountMenu(false)}>
+              Administration
+            </a>
+          </Link>
+        )}
         <Link href="/account">
           <a onClick={() => props.setShowAccountMenu(false)}>My account</a>
         </Link>

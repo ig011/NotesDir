@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Navbar.module.css";
 import Avatar from "@material-ui/core/Avatar";
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import { deepPurple } from "@material-ui/core/colors";
 import {
   client,
   UserInfo,
@@ -13,28 +11,19 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import AccountMenu from "./AccountMenu/AccountMenu";
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      display: "flex",
-      "& > *": {
-        margin: theme.spacing(1),
-      },
-    },
-    purple: {
-      color: theme.palette.getContrastText(deepPurple[500]),
-      backgroundColor: deepPurple[500],
-    },
-  })
-);
-
 function Navbar(props: any) {
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const router = useRouter();
-  const classes = useStyles();
 
-  const { isLogged, username, changeIsLogged, changeUsername } =
-    useContainer(UserInfo);
+  const {
+    isLogged,
+    username,
+    profilePicture,
+    changeIsLogged,
+    changeUsername,
+    changeIsStaff,
+    changeProfilePicture,
+  } = useContainer(UserInfo);
 
   const getCurrentUser = async () => {
     await client
@@ -43,9 +32,15 @@ function Navbar(props: any) {
         if (response.data?.me?.username) {
           changeIsLogged(true);
           changeUsername(response.data?.me.username);
+          changeIsStaff(response.data?.me.isStaff);
+          changeProfilePicture(
+            response.data.me.userinformationSet[0].profilePicture
+          );
         } else {
           changeIsLogged(false);
           changeUsername("");
+          changeIsStaff(false);
+          changeProfilePicture("");
         }
       })
       .catch();
@@ -105,12 +100,14 @@ function Navbar(props: any) {
             })}
           </>
         ) : (
-          <div className={classes.root}>
+          <div>
             <button
               className={styles.btn2}
               onClick={() => setShowAccountMenu(true)}
             >
-              <Avatar className={classes.purple}>{username[0]}</Avatar>
+              <Avatar src="E:\Temp\Projects\NotesDir\backend\static\images\admin\Koala.jpg">
+                {username[0]}
+              </Avatar>
               {username}
             </button>
           </div>
