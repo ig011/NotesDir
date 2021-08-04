@@ -1,5 +1,6 @@
 import { IconButton } from "@material-ui/core";
 import EditRoundedIcon from "@material-ui/icons/EditRounded";
+import DeleteRoundedIcon from "@material-ui/icons/DeleteRounded";
 import React, { useState } from "react";
 import styles from "./TodoElement.module.css";
 
@@ -11,6 +12,10 @@ function TodoElement(props: any) {
     setExpandTodo(!expandTodo);
   };
 
+  const handleDeleteTodo = () => {
+    console.log("Todo deleted! :D");
+  };
+
   return (
     <div
       className={`${styles.container} ${
@@ -20,11 +25,14 @@ function TodoElement(props: any) {
     >
       <div className={styles.toppanel}>
         <IconButton
-          aria-label="delete"
+          aria-label="edit"
           size="small"
           onClick={() => setEditTodo(!editTodo)}
         >
           <EditRoundedIcon fontSize="small" />
+        </IconButton>
+        <IconButton aria-label="delete" size="small" onClick={handleDeleteTodo}>
+          <DeleteRoundedIcon fontSize="small" />
         </IconButton>
       </div>
       {!editTodo ? (

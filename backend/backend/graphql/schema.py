@@ -121,7 +121,6 @@ class TodoQuery(graphene.ObjectType):
     def resolve_all_todos(root, info):
         return Todo.objects.all().order_by('-created_at')
 
-
 class UserInformationQuery(graphene.ObjectType):
     user_informations = graphene.List(UserInformationType)
 
