@@ -51,6 +51,8 @@ CORS_ALLOWED_ORIGINS = (
     'http://127.0.0.1:3000',
     'http://localhost:3000',
 )
+
+CORS_ALLOW_ALL_ORIGINS = True 
 CORS_ALLOW_CREDENTIALS = True 
 
 
@@ -148,7 +150,7 @@ GRAPHQL_JWT = {
     ],
     "JWT_VERIFY_EXPIRATION": True,
     "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
-    'JWT_EXPIRATION_DELTA': timedelta(minutes=60),
+    'JWT_EXPIRATION_DELTA': timedelta(minutes=5),
     'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=120),
 }
 

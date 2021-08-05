@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { GET_CURRENT_USER, UserInfo, client } from "./api/apollo-client";
 
 export default function Home(props: any) {
-  const { isLogged, changeIsLogged, changeUsername } = UserInfo.useContainer();
+  const { isLogged } = UserInfo.useContainer();
   const router = useRouter();
 
   useEffect(() => {

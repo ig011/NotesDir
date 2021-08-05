@@ -29,8 +29,13 @@ function AccountMenu(props: any) {
   const wrapperRef = useRef(null);
   useOutsideAlerter(wrapperRef);
 
-  const { isStaff, changeIsLogged, changeUsername, changeIsLoggedOut } =
-    useContainer(UserInfo);
+  const {
+    isStaff,
+    changeIsLogged,
+    changeUsername,
+    changeIsLoggedOut,
+    changeProfilePicture,
+  } = useContainer(UserInfo);
 
   const router = useRouter();
   const [logOutUser] = useMutation(LOGOUT_USER);
@@ -43,6 +48,7 @@ function AccountMenu(props: any) {
           changeIsLogged(false);
           changeIsLoggedOut(true);
           changeUsername("");
+          changeProfilePicture("");
           router.push({ pathname: "/signin" });
           client.resetStore();
         }

@@ -103,3 +103,19 @@
   .container {
   }
 }
+
+@media screen and (max-width: 640px) {
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+
+  .links {
+    display: none;
+  }
+
+  .account {
+    margin: 0;
+  }
+}

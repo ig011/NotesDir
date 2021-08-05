@@ -4,7 +4,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import styles from "../styles/signup/Signup.module.css";
 import { useMutation } from "@apollo/client";
-import { UserInfo, LOGIN_USER } from "./api/apollo-client";
+import client, {
+  UserInfo,
+  LOGIN_USER,
+  GET_CURRENT_USER,
+} from "./api/apollo-client";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
@@ -28,12 +32,15 @@ function Signin() {
     changeIsLogged,
     changeUsername,
     changeIsLoggedOut,
+    changeProfilePicture,
+    changeIsStaff,
   } = UserInfo.useContainer();
 
   const [logInUser] = useMutation(LOGIN_USER);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isValid, setIsValid] = useState(true);
   const [verifyAccount, setVerifyAccount] = useState(false);
+  const [invalidCredentials, setInvalidCredentials] = useState(false);
   const router = useRouter();
 
   const onSubmit = async (data: any) => {
@@ -49,19 +56,33 @@ function Signin() {
           changeUsername(response.data?.logInUser.payload.username);
         }
       })
-      .catch();
+      .catch((err) => {
+        console.log(err);
+        setInvalidCredentials(true);
+      });
+    await client
+      .query({ query: GET_CURRENT_USER })
+      .then((response) => {
+        console.log(response);
+        if (response.data?.me) {
+          changeIsStaff(response.data.me.isStaff);
+          changeProfilePicture(
+            response.data.me.userinformationSet[0].profilePicture
+          );
+          setInvalidCredentials(false);
+          router.push("/");
+        }
+      })
+      .catch((err) => console.log(err));
     setIsSubmitting(false);
   };
 
   useEffect(() => {
+    if (isLogged) router.push("/");
     return () => {
       changeIsLoggedOut(false);
     };
   }, []);
-
-  if (isLogged) {
-    router.push("/");
-  }
 
   return (
     <div className={styles.container}>
@@ -79,6 +100,11 @@ function Signin() {
         {isLoggedOut && (
           <div className={styles.usercreated}>
             You have been succesfully logged out!
+          </div>
+        )}
+        {invalidCredentials && (
+          <div className={styles.verifyaccount}>
+            Invalid username or password.
           </div>
         )}
         {verifyAccount && (

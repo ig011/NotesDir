@@ -198,12 +198,12 @@
     align-items: center;
     justify-content: flex-start;
     gap: 20px;
-    height: 100%;
+    height: fit-content;
   }
 
   .usercreated,
   .verifyaccount {
-    width: 100%;
+    width: 80%;
   }
 
   .left {
@@ -212,12 +212,15 @@
 
   .right {
     display: flex;
+    align-items: center;
     justify-content: center;
+    flex-direction: column;
     width: 100%;
     margin: 0px;
+    margin-bottom: 40px;
   }
 
   .form {
-    width: 70%;
+    width: 80%;
   }
 }
