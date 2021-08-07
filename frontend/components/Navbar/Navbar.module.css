@@ -18,6 +18,10 @@
   cursor: pointer;
 }
 
+.menubutton {
+  display: none;
+}
+
 .links {
   grid-column: 2;
   align-self: center;
@@ -36,11 +40,11 @@
   transition: all 0.2s ease;
   cursor: pointer;
   font-weight: bold;
-  border: 2px rgb(32, 43, 48) solid;
+  border: 2px rgba(32, 43, 48, 0) solid;
 }
 
 .links a:hover {
-  border: 2px white solid;
+  border: 2px rgba(255, 255, 255, 1) solid;
   box-shadow: 0 0 2px white;
 }
 
@@ -99,6 +103,10 @@
   box-shadow: 0 0 20px black;
 }
 
+.menubutton {
+  display: none;
+}
+
 @media screen and (max-width: 934px) {
   .container {
   }
@@ -106,16 +114,70 @@
 
 @media screen and (max-width: 640px) {
   .container {
+    position: relative;
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: space-between;
+    padding: 0px 20px;
   }
 
   .links {
-    display: none;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 8px;
+    top: 70px;
+    left: 0;
+    height: 100vh;
+    padding: 10px 0px;
+    background-color: rgba(37, 49, 54, 0.97);
+    transition: all 0.2s ease-in-out;
+    transform: translateX(-100px);
+    visibility: hidden;
+    opacity: 0;
+    z-index: 1;
+  }
+
+  .linksactive {
+    transform: translateX(0px);
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .links a {
+    text-align: center;
+    padding: 10px;
+    width: 97%;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    font-weight: bold;
+    border: none;
+    background-color: rgba(46, 61, 66, 0.95);
+    border-radius: 3px;
   }
 
   .account {
     margin: 0;
+  }
+
+  .menubutton {
+    display: block;
+  }
+
+  .signbuttons {
+    position: absolute;
+    z-index: 2;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    top: calc(100vh - 60px);
+    display: none;
+  }
+
+  .account .btn1 {
+    width: 25%;
+    font-size: 18px;
+    transition: all 0.2s ease;
   }
 }

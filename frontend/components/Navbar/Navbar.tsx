@@ -8,9 +8,13 @@ import {
 } from "../../pages/api/apollo-client";
 import Link from "next/link";
 import AccountMenu from "./AccountMenu/AccountMenu";
+import MenuOutlined from "@material-ui/icons/MenuOutlined";
+import CancelOutlined from "@material-ui/icons/CancelOutlined";
+import { IconButton } from "@material-ui/core";
 
 function Navbar(props: any) {
   const [showAccountMenu, setShowAccountMenu] = useState(false);
+  const [showNavbarMenu, setShowNavbarMenu] = useState(false);
 
   const {
     isLogged,
@@ -78,18 +82,22 @@ function Navbar(props: any) {
   return (
     <header className={styles.container}>
       <div className={styles.logo}>NotesDir</div>
-      <div className={styles.links}>
+      <div
+        className={`${styles.links} ${
+          showNavbarMenu ? styles.linksactive : null
+        }`}
+      >
         {navElements.map((elem) => {
           return (
             <Link href={elem.path}>
-              <a>{elem.name}</a>
+              <a onClick={() => setShowNavbarMenu(false)}>{elem.name}</a>
             </Link>
           );
         })}
       </div>
       <div className={styles.account}>
         {!isLogged ? (
-          <>
+          <div className={styles.signbuttons}>
             {navButtons.map((elem) => {
               return (
                 <Link href={elem.path}>
@@ -97,7 +105,7 @@ function Navbar(props: any) {
                 </Link>
               );
             })}
-          </>
+          </div>
         ) : (
           <div>
             <button
@@ -114,6 +122,23 @@ function Navbar(props: any) {
             </button>
           </div>
         )}
+        <div className={styles.menubutton}>
+          <IconButton aria-label="delete" size="small">
+            {!showNavbarMenu ? (
+              <MenuOutlined
+                fontSize="large"
+                style={{ fill: "white" }}
+                onClick={() => setShowNavbarMenu(true)}
+              />
+            ) : (
+              <CancelOutlined
+                fontSize="large"
+                style={{ fill: "white" }}
+                onClick={() => setShowNavbarMenu(false)}
+              />
+            )}
+          </IconButton>
+        </div>
       </div>
       {showAccountMenu && isLogged && (
         <AccountMenu setShowAccountMenu={setShowAccountMenu} />
