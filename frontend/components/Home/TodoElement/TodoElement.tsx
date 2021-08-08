@@ -16,6 +16,12 @@ function TodoElement(props: any) {
     console.log("Todo deleted! :D");
   };
 
+  const handleEditTodo = () => {
+    console.log("Todo edited! :D");
+    setEditTodo(false);
+    setExpandTodo(false);
+  };
+
   return (
     <div
       className={`${styles.container} ${
@@ -27,12 +33,15 @@ function TodoElement(props: any) {
         <IconButton
           aria-label="edit"
           size="small"
-          onClick={() => setEditTodo(!editTodo)}
+          onClick={() => {
+            setEditTodo(!editTodo);
+            if (!expandTodo) setExpandTodo(true);
+          }}
         >
-          <EditRoundedIcon fontSize="small" />
+          <EditRoundedIcon fontSize="default" />
         </IconButton>
         <IconButton aria-label="delete" size="small" onClick={handleDeleteTodo}>
-          <DeleteRoundedIcon fontSize="small" />
+          <DeleteRoundedIcon fontSize="default" />
         </IconButton>
       </div>
       {!editTodo ? (
@@ -58,14 +67,55 @@ function TodoElement(props: any) {
               </label>
               {props.data?.createdAt !== props.data?.modifiedAt && (
                 <label className={styles.lastedited}>
-                  Last edited{" "}
+                  Last edited
                   {new Date(props.data?.modifiedAt).toLocaleString()}
                 </label>
               )}
             </div>
           </div>
         </>
-      ) : null}
+      ) : (
+        <div className={styles.edittodo}>
+          <input
+            type="text"
+            placeholder="Title"
+            defaultValue={props.data?.title}
+            className={styles.inputtitle}
+          />
+          <textarea className={styles.textareadescription}>
+            {props.data?.description}
+          </textarea>
+          <div className={styles.category}>CATEGORY XXXXXXX</div>
+          <div className={styles.info}>
+            <label className={styles.createdat}>
+              Created at {new Date(props.data?.createdAt).toLocaleString()}
+            </label>
+            {props.data?.createdAt !== props.data?.modifiedAt && (
+              <label className={styles.lastedited}>
+                Last edited
+                {new Date(props.data?.modifiedAt).toLocaleString()}
+              </label>
+            )}
+          </div>
+          <div className={styles.editbuttons}>
+            <button
+              className={`${styles.button} ${styles.btn1}`}
+              onClick={handleEditTodo}
+            >
+              Ok
+            </button>
+            <button
+              className={`${styles.button} ${styles.btn2}`}
+              onClick={() => {
+                setEditTodo(!editTodo);
+                if (!expandTodo) setExpandTodo(true);
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

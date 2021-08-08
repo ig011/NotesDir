@@ -50,9 +50,6 @@ function Signin() {
     })
       .then((response) => {
         if (response.data?.logInUser.payload.username) {
-          setVerifyAccount(false);
-          changeIsLogged(true);
-          changeIsLoggedOut(false);
           changeUsername(response.data?.logInUser.payload.username);
         }
       })
@@ -69,6 +66,9 @@ function Signin() {
           changeProfilePicture(
             response.data.me.userinformationSet[0].profilePicture
           );
+          setVerifyAccount(false);
+          changeIsLogged(true);
+          changeIsLoggedOut(false);
           setInvalidCredentials(false);
           router.push("/");
         }

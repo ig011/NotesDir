@@ -13,6 +13,12 @@
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
+.label1 {
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
 .btn {
   padding: 8px;
   font-size: 14px;

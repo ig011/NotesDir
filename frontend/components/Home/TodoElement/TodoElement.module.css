@@ -9,7 +9,6 @@
   display: flex;
   flex-direction: column;
   transition: all 0.5s ease-in-out;
-  border-radius: 10px;
   overflow: hidden;
   cursor: pointer;
 }
@@ -96,4 +95,69 @@
 .info .lastedited {
   grid-column: 2;
   justify-self: flex-end;
+}
+
+.edittodo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.inputtitle {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 5px 10px;
+  width: 95%;
+  align-self: center;
+}
+
+.textareadescription {
+  width: 95%;
+  height: 400px;
+  padding: 10px;
+  resize: none;
+  font-size: 16px;
+  text-align: justify;
+  align-self: center;
+}
+
+.editbuttons {
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+  padding-top: 0px;
+}
+
+.button {
+  padding: 7px 20px;
+  border: none;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: bold;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  color: white;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn1 {
+  background-color: rgb(50, 71, 82);
+}
+
+.btn2 {
+  background-color: rgb(32, 43, 48);
+}
+
+.btn1:hover {
+  background-color: rgb(63, 85, 99);
+}
+
+.btn2:hover {
+  background-color: rgb(44, 62, 73);
+}
+
+.btn1:hover,
+.btn2:hover {
+  box-shadow: 0 0 2px rgba(0, 0, 0, 1);
 }
