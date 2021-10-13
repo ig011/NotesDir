@@ -5,7 +5,7 @@ import TodoElement from "../TodoElement/TodoElement";
 import styles from "./TodosContainer.module.css";
 
 function TodosContainer() {
-  const { loading, data } = useQuery(QUERY_GET_TODOS);
+  const { loading, data } = useQuery(QUERY_GET_TODOS, { pollInterval: 2000 });
 
   return (
     <div className={styles.container}>

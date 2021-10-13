@@ -82,7 +82,7 @@ function Signin() {
     return () => {
       changeIsLoggedOut(false);
     };
-  }, []);
+  }, [isLogged]);
 
   return (
     <div className={styles.container}>

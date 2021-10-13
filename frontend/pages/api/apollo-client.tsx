@@ -1,7 +1,6 @@
-import { ApolloClient, gql, InMemoryCache, useMutation } from "@apollo/client";
-import { createContainer, useContainer } from "unstated-next";
+import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
+import { createContainer } from "unstated-next";
 import { useState } from "react";
-import { useRouter } from "next/router";
 
 // Create state management
 function userInfo() {
@@ -52,7 +51,42 @@ function userInfo() {
   };
 }
 
+function externalCommands() {
+  let [hideAllTodos, setHideAllTodos] = useState(false);
+  let [deleteAllTodos, setDeleteAllTodos] = useState(false);
+  let [deleteSelectedTodo, setDeleteSelectedTodo] = useState({
+    title: "",
+    id: -1,
+  });
+
+  const changeHideAllTodos = (hideState: boolean) => {
+    setHideAllTodos(hideState);
+  };
+
+  const changeDeleteAllTodos = (deleteState: boolean) => {
+    setDeleteAllTodos(deleteState);
+  };
+
+  const changeDeleteSelectedTodo = (todoTitle: string, todoIndex: number) => {
+    setDeleteSelectedTodo({
+      ...deleteSelectedTodo,
+      title: todoTitle,
+      id: todoIndex,
+    });
+  };
+
+  return {
+    hideAllTodos,
+    deleteAllTodos,
+    deleteSelectedTodo,
+    changeHideAllTodos,
+    changeDeleteAllTodos,
+    changeDeleteSelectedTodo,
+  };
+}
+
 export let UserInfo = createContainer(userInfo);
+export let ExternalCommands = createContainer(externalCommands);
 
 // Create React Apollo Client - GraphQL
 export const client = new ApolloClient({
@@ -137,7 +171,7 @@ export const MUTATION_ADD_TODO = gql`
     $backgroundColor: String
     $description: String!
     $endDate: DateTime!
-    $startDate: DateTime!
+    $startDate: DateTime
     $thumbnail: String
     $title: String!
     $userId: ID!
@@ -152,6 +186,14 @@ export const MUTATION_ADD_TODO = gql`
       userId: $userId
     ) {
       todoCreated
+    }
+  }
+`;
+
+export const MUTATION_DELETE_TODO = gql`
+  mutation deleteTodo($todoId: ID!) {
+    deleteTodo(todoId: $todoId) {
+      todoDeleted
     }
   }
 `;

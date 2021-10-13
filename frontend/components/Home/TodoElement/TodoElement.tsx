@@ -1,23 +1,37 @@
 import { IconButton } from "@material-ui/core";
 import EditRoundedIcon from "@material-ui/icons/EditRounded";
 import DeleteRoundedIcon from "@material-ui/icons/DeleteRounded";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./TodoElement.module.css";
+import { ExternalCommands } from "../../../pages/api/apollo-client";
+import DeleteSelectedTodo from "../Dialogs/DeleteSelectedTodo/DeleteSelectedTodo";
 
 function TodoElement(props: any) {
   const [expandTodo, setExpandTodo] = useState(false);
   const [editTodo, setEditTodo] = useState(false);
+  const { hideAllTodos, changeHideAllTodos, changeDeleteSelectedTodo } =
+    ExternalCommands.useContainer();
+
+  useEffect(() => {
+    if (hideAllTodos) {
+      setExpandTodo(false);
+      changeHideAllTodos(false);
+    }
+  }, [hideAllTodos]);
+
+  const handleMinimizeTodo = () => {
+    setExpandTodo(false);
+  };
 
   const handleOnClick = () => {
     setExpandTodo(!expandTodo);
   };
 
   const handleDeleteTodo = () => {
-    console.log("Todo deleted! :D");
+    changeDeleteSelectedTodo(props.data?.title, props.data?.id);
   };
 
   const handleEditTodo = () => {
-    console.log("Todo edited! :D");
     setEditTodo(false);
     setExpandTodo(false);
   };
@@ -34,8 +48,10 @@ function TodoElement(props: any) {
           aria-label="edit"
           size="small"
           onClick={() => {
-            setEditTodo(!editTodo);
             if (!expandTodo) setExpandTodo(true);
+            else setExpandTodo(false);
+
+            setEditTodo(!editTodo);
           }}
         >
           <EditRoundedIcon fontSize="default" />
@@ -67,7 +83,7 @@ function TodoElement(props: any) {
               </label>
               {props.data?.createdAt !== props.data?.modifiedAt && (
                 <label className={styles.lastedited}>
-                  Last edited
+                  Last edited:{" "}
                   {new Date(props.data?.modifiedAt).toLocaleString()}
                 </label>
               )}
@@ -92,8 +108,7 @@ function TodoElement(props: any) {
             </label>
             {props.data?.createdAt !== props.data?.modifiedAt && (
               <label className={styles.lastedited}>
-                Last edited
-                {new Date(props.data?.modifiedAt).toLocaleString()}
+                Last edited: {new Date(props.data?.modifiedAt).toLocaleString()}
               </label>
             )}
           </div>
@@ -107,8 +122,8 @@ function TodoElement(props: any) {
             <button
               className={`${styles.button} ${styles.btn2}`}
               onClick={() => {
+                if (expandTodo) setExpandTodo(false);
                 setEditTodo(!editTodo);
-                if (!expandTodo) setExpandTodo(true);
               }}
             >
               Cancel

@@ -36,21 +36,21 @@ class addTodo(graphene.Mutation):
         user_id = graphene.ID(required=True)
         title = graphene.String(required=True)
         description = graphene.String(required=True)
-        thumbnail = graphene.String()
-        background_color = graphene.String()
-        start_date = graphene.DateTime()
+        thumbnail = graphene.String(required=False)
+        background_color = graphene.String(required=False)
+        start_date = graphene.DateTime(required=False)
         end_date = graphene.DateTime(required=True)
 
     todo = graphene.Field(TodoType)
     todo_created = graphene.Boolean()
 
-    @graphql_jwt.decorators.login_required
+    # @graphql_jwt.decorators.login_required
     @classmethod
-    def mutate(cls, root, info, title, description, thumbnail, background_color, start_date, end_date):
-        user = ExtendUser.objects.filter(username=info.context.username).first()
+    def mutate(cls, root, info, user_id, title, description, end_date, thumbnail="", background_color="", start_date=""):
+        user = ExtendUser.objects.filter(username=info.context.user).first()
         if user:
             todo_created = True
-            todo = Todo(user_id=user_id, title=title, description=description, thumbnail=thumbnail, background_color=background_color, start_date=start_date, end_date=end_date)
+            todo = Todo(user_id=user.id, title=title, description=description, thumbnail=thumbnail, background_color=background_color, start_date=start_date, end_date=end_date)
             todo.save()
             return addTodo(todo_created=todo_created, todo=todo)
         else:
@@ -95,17 +95,16 @@ class updateTodo(graphene.Mutation):
 
 class deleteTodo(graphene.Mutation):
     class Arguments:
-        user_id = graphene.ID(required=True)
         todo_id = graphene.ID(required=True)
 
     todo_deleted = graphene.Boolean()
 
-    @graphql_jwt.decorators.login_required
+    # @graphql_jwt.decorators.login_required
     @classmethod
-    def mutate(cls, root, info, user_id, todo_id):
-        user = ExtendUser.objects.get(id=user_id)
+    def mutate(cls, root, info, todo_id):
+        user = ExtendUser.objects.filter(username=info.context.user).first()
         if user:
-            todo = Todo.objects.get(id=todo_id)
+            todo = Todo.objects.get(user_id=user.id, id=todo_id)
             if todo:
                 todo_deleted = True
                 todo.delete()

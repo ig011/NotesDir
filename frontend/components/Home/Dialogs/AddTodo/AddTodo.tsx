@@ -16,7 +16,7 @@ function AddTodo(props: any) {
     useEffect(() => {
       function handleClickOutside(event: any) {
         if (ref.current && !ref.current.contains(event.target)) {
-          props.setShowAddTodo(false);
+          props.setShowDialogAddTodo(false);
         }
       }
 
@@ -31,7 +31,7 @@ function AddTodo(props: any) {
   useOutsideAlerter(wrapperRef);
 
   const handleClickCancel = () => {
-    props.setShowAddTodo(false);
+    props.setShowDialogAddTodo(false);
   };
 
   const {
@@ -44,11 +44,19 @@ function AddTodo(props: any) {
 
   const [addTodo] = useMutation(MUTATION_ADD_TODO);
   const handleClickAdd = async (data: any) => {
-    console.log(data);
+    let dateTime = new Date();
     await addTodo({
-      variables: { title: data.title, description: data.description },
+      variables: {
+        title: data.title,
+        description: data.content,
+        userId: 1,
+        endDate: dateTime.toISOString(),
+      },
     })
-      .then()
+      .then((response) => {
+        console.log(response);
+        props.setShowDialogAddTodo(false);
+      })
       .catch();
   };
 
