@@ -3,12 +3,16 @@ import EditRoundedIcon from "@material-ui/icons/EditRounded";
 import DeleteRoundedIcon from "@material-ui/icons/DeleteRounded";
 import React, { useState, useEffect } from "react";
 import styles from "./TodoElement.module.css";
-import { ExternalCommands } from "../../../pages/api/apollo-client";
-import DeleteSelectedTodo from "../Dialogs/DeleteSelectedTodo/DeleteSelectedTodo";
+import {
+  ExternalCommands,
+  MUTATION_UPDATE_TODO,
+} from "../../../pages/api/apollo-client";
+import { useMutation } from "@apollo/client";
 
 function TodoElement(props: any) {
   const [expandTodo, setExpandTodo] = useState(false);
   const [editTodo, setEditTodo] = useState(false);
+  const [updateTodo] = useMutation(MUTATION_UPDATE_TODO);
   const { hideAllTodos, changeHideAllTodos, changeDeleteSelectedTodo } =
     ExternalCommands.useContainer();
 
@@ -34,6 +38,23 @@ function TodoElement(props: any) {
   const handleEditTodo = () => {
     setEditTodo(false);
     setExpandTodo(false);
+  };
+
+  const handleUpdateTodo = async (data: any) => {
+    let dateTime = new Date();
+    await updateTodo({
+      variables: {
+        title: data.title,
+        description: data.content,
+        userId: 1,
+        endDate: dateTime.toISOString(),
+      },
+    })
+      .then((response) => {
+        console.log(response);
+        props.setShowDialogAddTodo(false);
+      })
+      .catch();
   };
 
   return (
