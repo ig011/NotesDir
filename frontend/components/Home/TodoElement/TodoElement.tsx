@@ -8,6 +8,14 @@ import {
   MUTATION_UPDATE_TODO,
 } from "../../../pages/api/apollo-client";
 import { useMutation } from "@apollo/client";
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+const schema = yup.object().shape({
+  title: yup.string().required("Title cannot be blank."),
+  content: yup.string().required("Content cannot be blank."),
+});
 
 function TodoElement(props: any) {
   const [expandTodo, setExpandTodo] = useState(false);
@@ -23,6 +31,14 @@ function TodoElement(props: any) {
     }
   }, [hideAllTodos]);
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
   const handleMinimizeTodo = () => {
     setExpandTodo(false);
   };
@@ -35,26 +51,25 @@ function TodoElement(props: any) {
     changeDeleteSelectedTodo(props.data?.title, props.data?.id);
   };
 
-  const handleEditTodo = () => {
+  const handleEditTodo = async (data: any) => {
     setEditTodo(false);
     setExpandTodo(false);
-  };
 
-  const handleUpdateTodo = async (data: any) => {
-    let dateTime = new Date();
-    await updateTodo({
-      variables: {
-        title: data.title,
-        description: data.content,
-        userId: 1,
-        endDate: dateTime.toISOString(),
-      },
-    })
-      .then((response) => {
-        console.log(response);
-        props.setShowDialogAddTodo(false);
-      })
-      .catch();
+    console.log(data);
+    // let dateTime = new Date();
+    // await updateTodo({
+    //   variables: {
+    //     title: data.title,
+    //     description: data.content,
+    //     userId: 1,
+    //     endDate: dateTime.toISOString(),
+    //   },
+    // })
+    //   .then((response) => {
+    //     console.log(response);
+    //     props.setShowDialogAddTodo(false);
+    //   })
+    //   .catch();
   };
 
   return (
@@ -112,44 +127,54 @@ function TodoElement(props: any) {
           </div>
         </>
       ) : (
-        <div className={styles.edittodo}>
-          <input
-            type="text"
-            placeholder="Title"
-            defaultValue={props.data?.title}
-            className={styles.inputtitle}
-          />
-          <textarea className={styles.textareadescription}>
-            {props.data?.description}
-          </textarea>
-          <div className={styles.category}>CATEGORY XXXXXXX</div>
-          <div className={styles.info}>
-            <label className={styles.createdat}>
-              Created at {new Date(props.data?.createdAt).toLocaleString()}
-            </label>
-            {props.data?.createdAt !== props.data?.modifiedAt && (
-              <label className={styles.lastedited}>
-                Last edited: {new Date(props.data?.modifiedAt).toLocaleString()}
+        <div>
+          <form
+            className={styles.edittodo}
+            onSubmit={handleSubmit(handleEditTodo)}
+          >
+            <input
+              type="text"
+              placeholder="Title"
+              defaultValue={props.data?.title}
+              className={styles.inputtitle}
+              {...register("title")}
+            />
+            <textarea
+              className={styles.textareadescription}
+              {...register("content")}
+            >
+              {props.data?.description}
+            </textarea>
+            <div className={styles.category}>CATEGORY XXXXXXX</div>
+            <div className={styles.info}>
+              <label className={styles.createdat}>
+                Created at {new Date(props.data?.createdAt).toLocaleString()}
               </label>
-            )}
-          </div>
-          <div className={styles.editbuttons}>
-            <button
-              className={`${styles.button} ${styles.btn1}`}
-              onClick={handleEditTodo}
-            >
-              Ok
-            </button>
-            <button
-              className={`${styles.button} ${styles.btn2}`}
-              onClick={() => {
-                if (expandTodo) setExpandTodo(false);
-                setEditTodo(!editTodo);
-              }}
-            >
-              Cancel
-            </button>
-          </div>
+              {props.data?.createdAt !== props.data?.modifiedAt && (
+                <label className={styles.lastedited}>
+                  Last edited:{" "}
+                  {new Date(props.data?.modifiedAt).toLocaleString()}
+                </label>
+              )}
+            </div>
+            <div className={styles.editbuttons}>
+              <button
+                className={`${styles.button} ${styles.btn1}`}
+                onClick={handleEditTodo}
+              >
+                Ok
+              </button>
+              <button
+                className={`${styles.button} ${styles.btn2}`}
+                onClick={() => {
+                  if (expandTodo) setExpandTodo(false);
+                  setEditTodo(!editTodo);
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
         </div>
       )}
     </div>

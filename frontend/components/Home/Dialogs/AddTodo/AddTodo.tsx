@@ -54,7 +54,6 @@ function AddTodo(props: any) {
       },
     })
       .then((response) => {
-        console.log(response);
         props.setShowDialogAddTodo(false);
       })
       .catch();
