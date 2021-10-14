@@ -17,7 +17,7 @@ When the installation finishes you can run web application by putting command
 npm run dev
 ```
 
-After that open your web browser and go to https://localhost:3000. This should open **HomeAutomation** Web App.
+After that open your web browser and go to https://localhost:3000. This should open **NotesDir** Web App.
 
 **BACKEND**
 

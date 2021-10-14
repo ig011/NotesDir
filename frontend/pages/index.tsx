@@ -3,7 +3,7 @@ import Topbar from "../components/Home/Top-bar/Topbar";
 import TodosContainer from "../components/Home/TodosContainer/TodosContainer";
 import styles from "../styles/home/Home.module.css";
 import { useRouter } from "next/router";
-import { GET_CURRENT_USER, UserInfo, client } from "./api/apollo-client";
+import { UserInfo } from "./api/apollo-client";
 
 export default function Home(props: any) {
   const { isLogged } = UserInfo.useContainer();
