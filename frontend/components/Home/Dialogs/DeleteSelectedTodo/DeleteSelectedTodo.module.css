@@ -25,6 +25,19 @@
   box-shadow: 0 0 5px black;
 }
 
+.labels {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 4px;
+  text-shadow: 0 0 1px black;
+}
+
+.label1 {
+  text-transform: uppercase;
+}
+
 .buttons {
   display: flex;
   justify-content: space-evenly;

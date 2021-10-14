@@ -27,9 +27,11 @@ function DeleteSelectedTodo(props: any) {
   return (
     <div className={styles.container}>
       <div className={styles.dialog}>
-        <label className={styles.label1}>
-          Are you sure to delete selected todo {deleteSelectedTodo.title}?
-        </label>
+        <div className={styles.labels}>
+          <label>Are you sure to delete selected todo</label>
+          <br />
+          <label className={styles.label1}>"{deleteSelectedTodo.title}"?</label>
+        </div>
         <div className={styles.buttons}>
           <button
             className={`${styles.btn} ${styles.btn2}`}

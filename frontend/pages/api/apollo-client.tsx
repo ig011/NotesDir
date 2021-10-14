@@ -198,4 +198,29 @@ export const MUTATION_DELETE_TODO = gql`
   }
 `;
 
+export const MUTATION_UPDATE_TODO = gql`
+  mutation updateTodo(
+    $backgroundColor: String
+    $description: String
+    $endDate: DateTime
+    $startDate: DateTime
+    $thumbnail: String
+    $title: String
+    $todoId: ID!
+    $userId: ID!
+  ) {
+    updateTodo(
+      backgroundColor: $backgroundColor
+      description: $description
+      endDate: $endDate
+      startDate: $startDate
+      thumbnail: $thumbnail
+      title: $title
+      userId: $userId
+    ) {
+      todoUpdated
+    }
+  }
+`;
+
 export default client;

@@ -60,7 +60,6 @@ function Signin() {
     await client
       .query({ query: GET_CURRENT_USER })
       .then((response) => {
-        console.log(response);
         if (response.data?.me) {
           changeIsStaff(response.data.me.isStaff);
           changeProfilePicture(
