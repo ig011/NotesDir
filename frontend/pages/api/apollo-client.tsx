@@ -174,7 +174,6 @@ export const MUTATION_ADD_TODO = gql`
     $startDate: DateTime
     $thumbnail: String
     $title: String!
-    $userId: ID!
   ) {
     addTodo(
       backgroundColor: $backgroundColor
@@ -183,7 +182,6 @@ export const MUTATION_ADD_TODO = gql`
       startDate: $startDate
       thumbnail: $thumbnail
       title: $title
-      userId: $userId
     ) {
       todoCreated
     }
@@ -207,7 +205,6 @@ export const MUTATION_UPDATE_TODO = gql`
     $thumbnail: String
     $title: String
     $todoId: ID!
-    $userId: ID!
   ) {
     updateTodo(
       backgroundColor: $backgroundColor
@@ -216,7 +213,7 @@ export const MUTATION_UPDATE_TODO = gql`
       startDate: $startDate
       thumbnail: $thumbnail
       title: $title
-      userId: $userId
+      todoId: $todoId
     ) {
       todoUpdated
     }

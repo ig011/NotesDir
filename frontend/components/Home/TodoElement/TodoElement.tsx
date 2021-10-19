@@ -21,6 +21,10 @@ function TodoElement(props: any) {
   const [expandTodo, setExpandTodo] = useState(false);
   const [editTodo, setEditTodo] = useState(false);
   const [updateTodo] = useMutation(MUTATION_UPDATE_TODO);
+  const [propsData, setPropsData] = useState({
+    title: props.data?.title,
+    content: props.data?.description,
+  });
   const { hideAllTodos, changeHideAllTodos, changeDeleteSelectedTodo } =
     ExternalCommands.useContainer();
 
@@ -55,21 +59,23 @@ function TodoElement(props: any) {
     setEditTodo(false);
     setExpandTodo(false);
 
-    console.log(data);
-    // let dateTime = new Date();
-    // await updateTodo({
-    //   variables: {
-    //     title: data.title,
-    //     description: data.content,
-    //     userId: 1,
-    //     endDate: dateTime.toISOString(),
-    //   },
-    // })
-    //   .then((response) => {
-    //     console.log(response);
-    //     props.setShowDialogAddTodo(false);
-    //   })
-    //   .catch();
+    let dateTime = new Date();
+
+    await updateTodo({
+      variables: {
+        title: data.title,
+        description: data.content,
+        todoId: props.data?.id,
+        endDate: dateTime.toISOString(),
+      },
+    })
+      .then(() => {
+        setPropsData({
+          title: props.data?.title,
+          content: props.data?.description,
+        });
+      })
+      .catch();
   };
 
   return (
@@ -98,9 +104,11 @@ function TodoElement(props: any) {
       </div>
       {!editTodo ? (
         <>
-          <h3 className={styles.title} onClick={handleOnClick}>
-            {props.data?.title}
-          </h3>
+          <div>
+            <h3 className={styles.title} onClick={handleOnClick}>
+              {props.data?.title}
+            </h3>
+          </div>
           <div className={styles.content} onClick={handleOnClick}>
             {props.data?.description}
           </div>
@@ -111,7 +119,7 @@ function TodoElement(props: any) {
             }`}
           >
             <div className={styles.category} onClick={handleOnClick}>
-              CATEGORY XXXXXXX
+              {props.data?.category ? "CATEGORY XXXXXXX" : null}
             </div>
             <div className={styles.info} onClick={handleOnClick}>
               <label className={styles.createdat}>
@@ -160,7 +168,7 @@ function TodoElement(props: any) {
             <div className={styles.editbuttons}>
               <button
                 className={`${styles.button} ${styles.btn1}`}
-                onClick={handleEditTodo}
+                type="submit"
               >
                 Ok
               </button>

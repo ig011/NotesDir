@@ -49,7 +49,6 @@ function AddTodo(props: any) {
       variables: {
         title: data.title,
         description: data.content,
-        userId: 1,
         endDate: dateTime.toISOString(),
       },
     })

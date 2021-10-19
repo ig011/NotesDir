@@ -33,7 +33,6 @@ class TodoType(DjangoObjectType):
 
 class addTodo(graphene.Mutation):
     class Arguments:
-        user_id = graphene.ID(required=True)
         title = graphene.String(required=True)
         description = graphene.String(required=True)
         thumbnail = graphene.String(required=False)
@@ -46,7 +45,7 @@ class addTodo(graphene.Mutation):
 
     # @graphql_jwt.decorators.login_required
     @classmethod
-    def mutate(cls, root, info, user_id, title, description, end_date, thumbnail="", background_color="", start_date=""):
+    def mutate(cls, root, info, title, description, end_date, thumbnail="", background_color="", start_date=""):
         user = ExtendUser.objects.filter(username=info.context.user).first()
         if user:
             todo_created = True
@@ -59,7 +58,6 @@ class addTodo(graphene.Mutation):
 
 class updateTodo(graphene.Mutation):
     class Arguments:
-        user_id = graphene.ID(required=True)
         todo_id = graphene.ID(required=True)
         title = graphene.String()
         description = graphene.String()
@@ -71,10 +69,12 @@ class updateTodo(graphene.Mutation):
     todo = graphene.Field(TodoType)
     todo_updated = graphene.Boolean()
 
-    @graphql_jwt.decorators.login_required
+    # @graphql_jwt.decorators.login_required
     @classmethod
-    def mutate(cls, root, info, user_id, todo_id, title, description, thumbnail, background_color, start_date, end_date):
-        user = ExtendUser.objects.filter(id=user_id).first()
+    def mutate(cls, root, info, todo_id, title, description, end_date, thumbnail = "", background_color = "", start_date = ""):
+        user = ExtendUser.objects.filter(username=info.context.user).first()
+        todo_updated = False
+
         if user:
             todo_updated = True
             todo = Todo.objects.get(id=todo_id)
@@ -90,7 +90,6 @@ class updateTodo(graphene.Mutation):
             else:
                 return updateTodo(todo_updated=todo_updated)
         else:
-            todo_updated = False
             return updateTodo(todo_updated=todo_updated)        
 
 class deleteTodo(graphene.Mutation):
