@@ -12,6 +12,24 @@ import MenuOutlined from "@material-ui/icons/MenuOutlined";
 import CancelOutlined from "@material-ui/icons/CancelOutlined";
 import { IconButton } from "@material-ui/core";
 
+export function stringToColor(string: string) {
+  let hash = 0;
+  let i;
+
+  for (i = 0; i < string.length; i += 1) {
+    hash = string.charCodeAt(i) + ((hash << 5) - hash);
+  }
+
+  let color = "#";
+
+  for (i = 0; i < 3; i += 1) {
+    const value = (hash >> (i * 8)) & 0xff;
+    color += `00${value.toString(16)}`.substr(-2);
+  }
+
+  return color;
+}
+
 function Navbar(props: any) {
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const [showNavbarMenu, setShowNavbarMenu] = useState(false);
@@ -115,6 +133,7 @@ function Navbar(props: any) {
               <Avatar
                 className={styles.avatar}
                 src={profilePicture ? profilePicture : ""}
+                style={{ backgroundColor: stringToColor(username) }}
               >
                 {username[0]}
               </Avatar>

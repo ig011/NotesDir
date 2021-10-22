@@ -73,7 +73,7 @@ function AccountMenu(props: any) {
         <Link href="/">
           <a onClick={() => props.setShowAccountMenu(false)}>Todos</a>
         </Link>
-        <Link href="/">
+        <Link href="/account/settings">
           <a onClick={() => props.setShowAccountMenu(false)}>Settings</a>
         </Link>
         <Link href="/">

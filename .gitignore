@@ -11,6 +11,7 @@ backend/graphql/__pycache__
 backend/backend/graphql/__pycache__
 backend/users/__pycache__
 backend/todos/__pycache__
+backend/static
 
 # Frontend
 frontend/.next

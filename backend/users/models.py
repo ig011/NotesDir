@@ -1,9 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
+import random
 
 #Functions
 def upload_user_profile_picture(instance, filename):
+    print(filename)
     return  ''.join([str(settings.MEDIA_ROOT), '/', instance.user.username, '/', filename])
 
 # Create your models here.
