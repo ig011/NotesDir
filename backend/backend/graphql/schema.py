@@ -112,6 +112,27 @@ class deleteTodo(graphene.Mutation):
                 todo_deleted = False
                 return todo_deleted
 
+class updateProfilePicture(graphene.Mutation):
+    class Arguments:
+        file_name = graphene.String()
+
+    profile_picture_updated = graphene.Boolean()
+
+    @classmethod
+    def mutate(cls, root, info, file_data):
+        user = ExtendUser.objects.filter(username=info.context.user).first()
+
+        profile_picture_updated = False
+
+        if user:
+            user_information = UserInformation.objects.get(user_id=user.id)
+            if user_information:
+                user_information.profile_picture = file_data
+                profile_picture_updated = True
+                
+            return profile_picture_updated
+
+
 class TodoQuery(graphene.ObjectType):
     all_todos = graphene.List(TodoType)
 

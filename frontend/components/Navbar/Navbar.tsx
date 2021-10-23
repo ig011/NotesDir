@@ -64,7 +64,7 @@ function Navbar(props: any) {
           changeProfilePicture("");
         }
       })
-      .catch();
+      .catch(() => {});
   };
 
   useEffect(() => {
