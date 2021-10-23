@@ -71,7 +71,7 @@ class updateTodo(graphene.Mutation):
 
     # @graphql_jwt.decorators.login_required
     @classmethod
-    def mutate(cls, root, info, todo_id, title, description, end_date, thumbnail = "", background_color = "", start_date = ""):
+    def mutate(cls, root, info, todo_id, title, description, end_date, background_color, thumbnail = "", start_date = ""):
         user = ExtendUser.objects.filter(username=info.context.user).first()
         todo_updated = False
 
@@ -114,12 +114,12 @@ class deleteTodo(graphene.Mutation):
 
 class updateProfilePicture(graphene.Mutation):
     class Arguments:
-        file_name = graphene.String()
+        input_file = graphene.String()
 
     profile_picture_updated = graphene.Boolean()
 
     @classmethod
-    def mutate(cls, root, info, file_data):
+    def mutate(cls, root, info, input_file):
         user = ExtendUser.objects.filter(username=info.context.user).first()
 
         profile_picture_updated = False
@@ -127,7 +127,7 @@ class updateProfilePicture(graphene.Mutation):
         if user:
             user_information = UserInformation.objects.get(user_id=user.id)
             if user_information:
-                user_information.profile_picture = file_data
+                user_information.profile_picture = input_file
                 profile_picture_updated = True
                 
             return profile_picture_updated

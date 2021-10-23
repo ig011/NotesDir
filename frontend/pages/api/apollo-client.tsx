@@ -160,6 +160,7 @@ export const QUERY_GET_TODOS = gql`
       id
       title
       description
+      backgroundColor
       createdAt
       modifiedAt
     }

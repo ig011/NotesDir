@@ -26,6 +26,7 @@
   align-items: center;
   justify-content: flex-end;
   gap: 5px;
+  transition: all 0.3s ease;
 }
 
 .title {
@@ -99,6 +100,7 @@
 }
 
 .edittodo {
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -125,12 +127,15 @@
 
 .editbuttons {
   display: flex;
+  align-items: center;
   gap: 8px;
   padding: 10px;
   padding-top: 0px;
 }
 
 .button {
+  min-height: 40px;
+  max-height: 40px;
   padding: 7px 20px;
   border: none;
   text-transform: uppercase;
@@ -140,6 +145,7 @@
   border-radius: 5px;
   color: white;
   transition: all 0.2s ease-in-out;
+  cursor: pointer;
 }
 
 .btn1 {

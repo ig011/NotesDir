@@ -11,6 +11,8 @@ import { useMutation } from "@apollo/client";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { GithubPicker } from "react-color";
+import { AnyObject } from "yup/lib/types";
 
 const schema = yup.object().shape({
   title: yup.string().required("Title cannot be blank."),
@@ -24,6 +26,7 @@ function TodoElement(props: any) {
   const [propsData, setPropsData] = useState({
     title: props.data?.title,
     content: props.data?.description,
+    background: props.data?.backgroundColor,
   });
   const { hideAllTodos, changeHideAllTodos, changeDeleteSelectedTodo } =
     ExternalCommands.useContainer();
@@ -47,6 +50,10 @@ function TodoElement(props: any) {
     setExpandTodo(false);
   };
 
+  const handleChangeBackgroundColor = (color: any) => {
+    setPropsData({ ...propsData, background: color.hex });
+  };
+
   const handleOnClick = () => {
     setExpandTodo(!expandTodo);
   };
@@ -65,17 +72,19 @@ function TodoElement(props: any) {
       variables: {
         title: data.title,
         description: data.content,
+        backgroundColor: propsData.background,
         todoId: props.data?.id,
         endDate: dateTime.toISOString(),
       },
     })
       .then(() => {
         setPropsData({
+          ...propsData,
           title: props.data?.title,
           content: props.data?.description,
         });
       })
-      .catch();
+      .catch(() => {});
   };
 
   return (
@@ -83,9 +92,11 @@ function TodoElement(props: any) {
       className={`${styles.container} ${
         expandTodo ? styles.containerExpand : null
       }`}
-      style={{ background: props.data?.background }}
     >
-      <div className={styles.toppanel}>
+      <div
+        className={styles.toppanel}
+        style={{ backgroundColor: propsData.background }}
+      >
         <IconButton
           aria-label="edit"
           size="small"
@@ -181,6 +192,12 @@ function TodoElement(props: any) {
               >
                 Cancel
               </button>
+              <div className={styles.colorPicker}>
+                <GithubPicker
+                  color={propsData.background}
+                  onChange={handleChangeBackgroundColor}
+                />
+              </div>
             </div>
           </form>
         </div>
