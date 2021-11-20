@@ -1,6 +1,7 @@
-from django.contrib import admin
-from .models import ExtendUser, UserInformation
 from django.apps import apps
+from django.contrib import admin
+
+from .models import ExtendUser, UserInformation
 
 # Register your models here.
 admin.site.register(ExtendUser)

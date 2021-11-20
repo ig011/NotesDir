@@ -1,13 +1,15 @@
-from django.contrib.auth import login
-from django.db.models.base import Model
+from datetime import datetime
+
 import graphene
 import graphql_jwt
+from django.contrib.auth import login
+from django.db.models.base import Model
 from graphene_django import DjangoObjectType
 from graphql_auth import mutations
-from graphql_auth.schema import UserQuery, MeQuery
+from graphql_auth.schema import MeQuery, UserQuery
 from todos.models import Todo
 from users.models import ExtendUser, UserInformation
-from datetime import datetime
+
 
 class AuthMutation(graphene.ObjectType):
     register = mutations.Register.Field()

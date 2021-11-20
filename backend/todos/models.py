@@ -1,6 +1,7 @@
 from django.db import models
 from users.models import ExtendUser
 
+
 # Create your models here.
 class Todo(models.Model):
     title = models.CharField(max_length=250, blank=False)
