@@ -7,6 +7,7 @@ from django.db.models.base import Model
 from graphene_django import DjangoObjectType
 from graphql_auth import mutations
 from graphql_auth.schema import MeQuery, UserQuery
+
 from todos.models import Todo
 from users.models import ExtendUser, UserInformation
 
@@ -20,18 +21,21 @@ class AuthMutation(graphene.ObjectType):
     refresh_token = mutations.RefreshToken.Field()
     verify_token = mutations.VerifyToken.Field()
 
+
 class UserInformationType(DjangoObjectType):
     def resolve_profile_picture(self, info, **kwargs):
         return info.context.build_absolute_uri(self.profile_picture.url)
 
     class Meta:
         model = UserInformation
-        fields = '__all__'
+        fields = "__all__"
+
 
 class TodoType(DjangoObjectType):
     class Meta:
         model = Todo
-        fields = '__all__'
+        fields = "__all__"
+
 
 class addTodo(graphene.Mutation):
     class Arguments:
@@ -47,16 +51,35 @@ class addTodo(graphene.Mutation):
 
     # @graphql_jwt.decorators.login_required
     @classmethod
-    def mutate(cls, root, info, title, description, end_date, thumbnail="", background_color="", start_date=""):
+    def mutate(
+        cls,
+        root,
+        info,
+        title,
+        description,
+        end_date,
+        thumbnail="",
+        background_color="",
+        start_date="",
+    ):
         user = ExtendUser.objects.filter(username=info.context.user).first()
         if user:
             todo_created = True
-            todo = Todo(user_id=user.id, title=title, description=description, thumbnail=thumbnail, background_color=background_color, start_date=start_date, end_date=end_date)
+            todo = Todo(
+                user_id=user.id,
+                title=title,
+                description=description,
+                thumbnail=thumbnail,
+                background_color=background_color,
+                start_date=start_date,
+                end_date=end_date,
+            )
             todo.save()
             return addTodo(todo_created=todo_created, todo=todo)
         else:
             todo_created = False
             return addTodo(todo_created=todo_created)
+
 
 class updateTodo(graphene.Mutation):
     class Arguments:
@@ -73,7 +96,18 @@ class updateTodo(graphene.Mutation):
 
     # @graphql_jwt.decorators.login_required
     @classmethod
-    def mutate(cls, root, info, todo_id, title, description, end_date, background_color, thumbnail = "", start_date = ""):
+    def mutate(
+        cls,
+        root,
+        info,
+        todo_id,
+        title,
+        description,
+        end_date,
+        background_color,
+        thumbnail="",
+        start_date="",
+    ):
         user = ExtendUser.objects.filter(username=info.context.user).first()
         todo_updated = False
 
@@ -92,7 +126,8 @@ class updateTodo(graphene.Mutation):
             else:
                 return updateTodo(todo_updated=todo_updated)
         else:
-            return updateTodo(todo_updated=todo_updated)        
+            return updateTodo(todo_updated=todo_updated)
+
 
 class deleteTodo(graphene.Mutation):
     class Arguments:
@@ -114,6 +149,7 @@ class deleteTodo(graphene.Mutation):
                 todo_deleted = False
                 return todo_deleted
 
+
 class updateProfilePicture(graphene.Mutation):
     class Arguments:
         input_file = graphene.String()
@@ -131,7 +167,7 @@ class updateProfilePicture(graphene.Mutation):
             if user_information:
                 user_information.profile_picture = input_file
                 profile_picture_updated = True
-                
+
             return profile_picture_updated
 
 
@@ -140,7 +176,8 @@ class TodoQuery(graphene.ObjectType):
 
     @graphql_jwt.decorators.login_required
     def resolve_all_todos(root, info):
-        return Todo.objects.all().order_by('-created_at')
+        return Todo.objects.all().order_by("-created_at")
+
 
 class UserInformationQuery(graphene.ObjectType):
     user_informations = graphene.List(UserInformationType)
@@ -154,9 +191,11 @@ class UserInformationQuery(graphene.ObjectType):
 class Query(UserQuery, MeQuery, TodoQuery, graphene.ObjectType):
     user_informations = graphene.List(UserInformationQuery)
 
+
 class Mutation(AuthMutation, graphene.ObjectType):
     add_todo = addTodo.Field()
     update_todo = updateTodo.Field()
     delete_todo = deleteTodo.Field()
+
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
